@@ -1,6 +1,6 @@
 # Chips-Circuits
 
-## Regels:
+## Constraints:
 ### - De lijnen mogen niet langs dezelfde route gaan
 ### - De lijnen mogen elkaar niet kruisen
 ### - De lijn mag niet buiten de grid komen, 17x12 voor print 1 en 17x16 voor print 2
