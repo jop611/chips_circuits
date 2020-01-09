@@ -1,4 +1,5 @@
 import csv
+from code.algorithms.constraints import *
 
 class Netlist():
     def __init__(self, print_nr, netlist_nr):
@@ -6,6 +7,8 @@ class Netlist():
         self.path = {}
         self.max_x = 0
         self.max_y = 0
+        self.x_list = []
+        self.y_list = []
 
         # map x, y coordinates of chips
         self.load_print(print_nr, netlist_nr)
@@ -21,11 +24,15 @@ class Netlist():
 
     def load_print(self, print_nr, netlist_nr):
 
+
+
         with open(f'gates&netlists/chip_{print_nr}/print_{print_nr}.csv', newline='') as csvfile:
             reader = csv.reader(csvfile)
             for chip, x, y in reader:
                 try:
                     self.gates[int(chip)] = (int(x), int(y))
+                    self.x_list.append(int(x))
+                    self.y_list.append(int(y))
 
                     # set boundaries of grid
                     if int(x) > self.max_x:
@@ -87,15 +94,4 @@ class Netlist():
             self.path[connection].append((x_a, y_a))
 
         print(self.path[connection])
-
-    def check_for_chip(self, next_coor):
-        for key in self.gates:
-            if next_coor in self.gates[key]:
-                return True
-        return False
-    
-    def check_for_right_chip(self, next_coor, destination):
-        if next_coor == destination:
-            return True
-        return False
 
