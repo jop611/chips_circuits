@@ -1,13 +1,7 @@
 import csv
-import os, sys
-from sys import argv
-directory = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(directory, "code"))
-sys.path.append(os.path.join(directory, "code", "classes"))
-sys.path.append(os.path.join(directory, "code", "algorithms"))
 
-from netlist import Netlist
-from connect import *
+from code.classes.netlist import *
+
 
 
 def main():
