@@ -1,29 +1,24 @@
 import csv
+import os, sys
 
+directory = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(directory, "code"))
+sys.path.append(os.path.join(directory, "code", "classes"))
+sys.path.append(os.path.join(directory, "code", "algoritmes"))
+
+from algorithms import *
 
 class Netlist():
     def __init__(self, print_nr, netlist_nr):
         self.gates = {}
         self.path = {}
-        max_x = 0
-        max_y = 0
+        self.max_x = 0
+        self.max_y = 0
 
         # map x, y coordinates of chips
-        with open(f'gates&netlists/chip_{print_nr}/print_{print_nr}.csv', newline='') as csvfile:
-            reader = csv.reader(csvfile)
-            for chip, x, y in reader:
-                try:
-                    self.gates[int(chip)] = (int(x), int(y))
-
-                    # set boundaries of grid
-                    if int(x) > max_x:
-                       max_x = int(x)
-                    if int(y) > max_y:
-                        max_y = int(y) 
-                except ValueError:
-                    pass
+        self.load_print(print_nr, netlist_nr)
             
-        self.boundaries = ((0, 0), (max_x + 1, max_y + 1))
+        self.boundaries = ((0, 0), (self.max_x + 1, self.max_y + 1))
         print(self.boundaries)
         
         self.connections = []
@@ -39,7 +34,23 @@ class Netlist():
         print(self.connections)
         print()
 
+    def load_print(self, print_nr, netlist_nr):
 
+        with open(f'gates&netlists/chip_{print_nr}/print_{print_nr}.csv', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for chip, x, y in reader:
+                try:
+                    self.gates[int(chip)] = (int(x), int(y))
+
+                    # set boundaries of grid
+                    if int(x) > self.max_x:
+                       self.max_x = int(x)
+                    if int(y) > self.max_y:
+                        self.max_y = int(y) 
+                except ValueError:
+                    pass
+    
+    
     def connect(self, connection):
         self.path[connection] = []
         chip_a = connection[0]
@@ -56,11 +67,9 @@ class Netlist():
         diff_y = y_b - y_a
 
         while x_a != x_b or y_a != y_b:
-
             if diff_x < 0:
                 if not self.check_for_chip((x_a - 1, y_a)):
                     x_a -= 1
-
             elif diff_x > 0:
                 self.check_for_chip((x_a + 1, y_a))
                 x_a += 1       
@@ -75,14 +84,14 @@ class Netlist():
 
         print(self.path[connection])
 
-
     def check_for_chip(self, next_coor):
         for key in self.gates:
             if next_coor in self.gates[key]:
                 return True
         return False
-
+    
     def check_for_right_chip(self, next_coor, destination):
         if next_coor == destination:
             return True
         return False
+
