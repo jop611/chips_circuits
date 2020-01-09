@@ -13,18 +13,11 @@ class Netlist():
         self.boundaries = ((0, 0), (self.max_x + 1, self.max_y + 1))
         print(self.boundaries)
         
-        self.connections = []
-        with open(f'gates&netlists/chip_{print_nr}/netlist_{netlist_nr}.csv', newline='') as csvfile:
-            netlist = csv.reader(csvfile)
-            for chip_a, chip_b in netlist:
-                try:
-                    manhattan_distance = abs(self.gates[int(chip_b)][0] - self.gates[int(chip_a)][0]) + abs(self.gates[int(chip_b)][1] - self.gates[int(chip_a)][1])
-                    self.connections.append((int(chip_a), int(chip_b), manhattan_distance))
-                except ValueError:
-                    pass
-            self.connections.sort(key=lambda connection: connection[2])
-        print(self.connections)
+        
+        self.netlist = self.load_netlist(print_nr, netlist_nr) 
+        print(self.netlist)
         print()
+
 
     def load_print(self, print_nr, netlist_nr):
 
@@ -43,6 +36,21 @@ class Netlist():
                     pass
     
     
+    def load_netlist(self, print_nr, netlist_nr):
+
+        netlist = []
+        with open(f'gates&netlists/chip_{print_nr}/netlist_{netlist_nr}.csv', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for chip_a, chip_b in reader:
+                try:
+                    manhattan_distance = abs(self.gates[int(chip_b)][0] - self.gates[int(chip_a)][0]) + abs(self.gates[int(chip_b)][1] - self.gates[int(chip_a)][1])
+                    netlist.append((int(chip_a), int(chip_b), manhattan_distance))
+                except ValueError:
+                    pass
+            netlist.sort(key=lambda connection: connection[2])
+        return netlist
+
+
     def connect(self, connection):
         self.path[connection] = []
         chip_a = connection[0]
@@ -60,17 +68,21 @@ class Netlist():
 
         while x_a != x_b or y_a != y_b:
             if diff_x < 0:
-                if not self.check_for_chip((x_a - 1, y_a)):
-                    x_a -= 1
+                # if not self.check_for_chip((x_a - 1, y_a)):
+                x_a -= 1
+                diff_x = x_b - x_a 
             elif diff_x > 0:
-                self.check_for_chip((x_a + 1, y_a))
-                x_a += 1       
+                # self.check_for_chip((x_a + 1, y_a))
+                x_a += 1  
+                diff_x = x_b - x_a     
             elif diff_y < 0:
-                self.check_for_chip((x_a, y_a - 1))
+                # self.check_for_chip((x_a, y_a - 1))
                 y_a -= 1
+                diff_y = y_b - y_a
             elif diff_y > 0:
-                self.check_for_chip((x_a, y_a + 1))
+                # self.check_for_chip((x_a, y_a + 1))
                 y_a += 1
+                diff_y = y_b - y_a
 
             self.path[connection].append((x_a, y_a))
 

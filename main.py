@@ -12,7 +12,7 @@ def main():
     
     netlist = Netlist(print_nr, netlist_nr)
     print(netlist.gates)
-    for connection in netlist.connections:
+    for connection in netlist.netlist:
         print()
         netlist.connect(connection)
         print()
