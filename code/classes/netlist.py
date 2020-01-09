@@ -73,6 +73,9 @@ class Netlist():
         diff_x = x_b - x_a
         diff_y = y_b - y_a
 
+        print(f"Zo veel in de x richting bewegen: {diff_x}")
+        print(f"Zo veel in de y richting bewegen: {diff_y}")
+
         while x_a != x_b or y_a != y_b:
             if diff_x < 0:
                 # if not self.check_for_chip((x_a - 1, y_a)):
