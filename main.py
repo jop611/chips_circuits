@@ -2,9 +2,9 @@ import csv
 import matplotlib.pyplot as plt
 import numpy as np
 from code.classes.netlist import *
+from code.classes.print import *
 from code.algorithms.constraints import *
 from visualize import *
-
 
 
 def main():
@@ -16,14 +16,14 @@ def main():
     
 
     netlist = Netlist(print_nr, netlist_nr)
-    print(netlist.gates)
+    print(netlist.print.chips)
     for connection in netlist.netlist:
         print()
         netlist.connect(connection)
         print()
-    print(netlist.x_list)
-    print(netlist.y_list)
-    plot(netlist.x_list, netlist.y_list)
+    print(netlist.print.x_list)
+    print(netlist.print.y_list)
+    plot(netlist.print.x_list, netlist.print.y_list)
     
 
 
