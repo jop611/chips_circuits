@@ -21,9 +21,9 @@ def main():
         print()
         netlist.connect(connection)
         print()
-    print(netlist.print.x_list)
-    print(netlist.print.y_list)
-    plot(netlist.print.x_list, netlist.print.y_list)
+    # print(netlist.print.x_list)
+    # print(netlist.print.y_list)
+    plot(netlist.print.x_list, netlist.print.y_list, netlist.path_plot)
     
 
 

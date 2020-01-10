@@ -4,7 +4,7 @@ from code.algorithms.constraints import *
 
 class Netlist():
     def __init__(self, print_nr, netlist_nr):
-
+        self.path_plot = {}
         self.path = {}
         self.print = Print(print_nr)               
         self.netlist = self.load_netlist(print_nr, netlist_nr) 
@@ -29,6 +29,7 @@ class Netlist():
 
     def connect(self, connection):
         self.path[connection] = []
+        
         chip_a = connection[0]
         chip_b = connection[1]
         print(connection)
@@ -36,6 +37,9 @@ class Netlist():
         y_a = self.print.chips[chip_a][1]
         x_b = self.print.chips[chip_b][0]
         y_b = self.print.chips[chip_b][1]
+        
+        path_x = [x_a]
+        path_y = [y_a]
 
         print(f"chip a: {x_a}, {y_a}\nchip_b: {x_b}, {y_b}")
 
@@ -64,6 +68,13 @@ class Netlist():
                 diff_y = y_b - y_a
 
             self.path[connection].append((x_a, y_a))
+            
+            path_x.append(x_a)
+            path_y.append(y_a)
+            
+        
+        self.path_plot[connection] = (path_x, path_y)
+        print(self.path_plot[connection])
 
         print(self.path[connection])
 
