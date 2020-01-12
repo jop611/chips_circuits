@@ -78,3 +78,10 @@ class Netlist():
 
         print(self.path[connection])
 
+# score = 0
+# for key in paths:
+        # score += int(key[2])
+# plt.title(f'Connections between gates, total wire length: {score}')
+    # plt.xlabel('x-coordinates -->')
+    # plt.ylabel('y-coordinates -->')
+
