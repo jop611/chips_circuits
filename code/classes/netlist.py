@@ -36,8 +36,20 @@ class Netlist():
         return netlist
 
 
+    def check_for_chip(self, next_coor):
+        for key in self.gates:
+            if next_coor in self.gates[key]:
+                return True
+        return False
+
+    def check_for_right_chip(self, next_coor, destination):
+        if next_coor == destination:
+            return True
+        return False
+
     def connect(self, connection):
         self.path[connection] = []
+
         
         chip_a = connection[0]
         chip_b = connection[1]
