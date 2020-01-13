@@ -6,10 +6,13 @@ class Netlist():
     def __init__(self, print_nr, netlist_nr):
         self.path_plot = {}
         self.path = {}
-        self.print = Print(print_nr)               
+        self.print = Print(print_nr)
+        self.lowerbound = 0               
         self.netlist = self.load_netlist(print_nr, netlist_nr) 
-        print(self.netlist)
+        self.length = 0
+        # print(self.netlist)
         print()
+        
 
     
     def load_netlist(self, print_nr, netlist_nr):
@@ -21,6 +24,12 @@ class Netlist():
                 try:
                     manhattan_distance = abs(self.print.chips[int(chip_b)][0] - self.print.chips[int(chip_a)][0]) + abs(self.print.chips[int(chip_b)][1] - self.print.chips[int(chip_a)][1])
                     netlist.append((int(chip_a), int(chip_b), manhattan_distance))
+                    self.lowerbound += manhattan_distance
+                    # print()
+                    # print(chip_a, chip_b)
+                    # print(f"distance: {manhattan_distance}")
+                    # print(f"updated lowerbound: {self.lowerbound}")
+                    # print()
                 except ValueError:
                     pass
             netlist.sort(key=lambda connection: connection[2])
@@ -77,11 +86,4 @@ class Netlist():
         print(self.path_plot[connection])
 
         print(self.path[connection])
-
-# score = 0
-# for key in paths:
-        # score += int(key[2])
-# plt.title(f'Connections between gates, total wire length: {score}')
-    # plt.xlabel('x-coordinates -->')
-    # plt.ylabel('y-coordinates -->')
 
