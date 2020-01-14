@@ -25,25 +25,26 @@ class Netlist():
                     manhattan_distance = abs(self.print.chips[int(chip_b)][0] - self.print.chips[int(chip_a)][0]) + abs(self.print.chips[int(chip_b)][1] - self.print.chips[int(chip_a)][1])
                     netlist.append((int(chip_a), int(chip_b), manhattan_distance))
                     self.lowerbound += manhattan_distance
-                    # print()
-                    # print(chip_a, chip_b)
-                    # print(f"distance: {manhattan_distance}")
-                    # print(f"updated lowerbound: {self.lowerbound}")
-                    # print()
                 except ValueError:
                     pass
             netlist.sort(key=lambda connection: connection[2])
         return netlist
 
-
-    def check_for_chip(self, next_coor):
-        for key in self.gates:
-            if next_coor in self.gates[key]:
+    def check_if_path(self, coordinate):
+        for connection in self.path:
+            if coordinate in self.path[connection]:
                 return True
         return False
 
-    def check_for_right_chip(self, next_coor, destination):
-        if next_coor == destination:
+
+    def check_if_chip(self, coordinate):
+        for chip in self.print.chips:
+            if coordinate == self.print.chips[chip]:
+                return True
+        return False
+
+    def check_if_right_chip(self, coordinate, destination):
+        if coordinate == destination:
             return True
         return False
 
@@ -72,7 +73,7 @@ class Netlist():
 
         while x_a != x_b or y_a != y_b:
             if diff_x < 0:
-                # if not self.check_for_chip((x_a - 1, y_a)):
+
                 x_a -= 1
                 diff_x = x_b - x_a 
             elif diff_x > 0:
