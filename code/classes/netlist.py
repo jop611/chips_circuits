@@ -48,6 +48,12 @@ class Netlist():
             return True
         return False
 
+
+    def score(self):
+        for connection in self.path:
+            self.length += len(self.path[connection]) - 1
+
+
     def connect(self, connection):
         self.path[connection] = []
 

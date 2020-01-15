@@ -23,6 +23,7 @@ def main():
 
     
     print(a_star(netlist))
+    print(netlist.netlist)
 
     # for connection in netlist.netlist:
     #     print()
@@ -30,8 +31,10 @@ def main():
     #     print()
     # print(netlist.print.x_list)
     # print(netlist.print.y_list)
+   
+    netlist.score()
     print(netlist.length)
-    plot(netlist.print.x_list, netlist.print.y_list, netlist.print.boundaries, netlist.path_plot)
+    plot(netlist.print.x_list, netlist.print.y_list, netlist.print.z_list, netlist.print.boundaries, netlist.path_plot)
     
     
 

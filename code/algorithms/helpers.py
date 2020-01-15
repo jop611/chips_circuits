@@ -29,10 +29,12 @@ def trace(paths, destination):
 def matlib_convert(path):
     x_list = []
     y_list = []
+    z_list = []
    
     for coordinate in path:
         x_list.append(coordinate[0])
         y_list.append(coordinate[1])
-    return (x_list, y_list)
+        z_list.append(coordinate[2])
+    return (x_list, y_list, z_list)
 
     
