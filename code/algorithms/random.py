@@ -1,5 +1,5 @@
 import random
 
-def Random(directions):
-    directions = random.choice(directions)
-    return directions
+def randomize(netlist):
+    connection = random.choice(netlist)
+    return connection

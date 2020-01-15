@@ -5,7 +5,7 @@ wat doet deze file
 """
 import csv
 from code.classes.print import *
-from code.algorithms.constraints import *
+
 
 class Netlist():
     def __init__(self, print_nr, netlist_nr):
@@ -61,3 +61,44 @@ class Netlist():
 
         for connection in self.path:
             self.length += len(self.path[connection]) - 1
+
+
+    def penalty(self, coordinate, destination):
+        # +x direction
+        if (coordinate[0] + 1, coordinate[1], coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2]) != destination:
+            return True
+        
+        # -x direction
+        if (coordinate[0] - 1, coordinate[1], coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2]) != destination:
+            return True
+
+        # +y direction
+        if (coordinate[0], coordinate[1] + 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2]) != destination:
+            return True
+
+        # -y direction
+        if (coordinate[0], coordinate[1] - 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2]) != destination:
+            return True
+
+        # -z direction
+        if (coordinate[0], coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2]) != destination:
+            return True
+
+        # # +x, +y direction
+        # if (coordinate[0] + 1, coordinate[1] + 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2]) != destination:
+        #     return True
+        
+        # # +x, -y direction
+        # if (coordinate[0] + 1, coordinate[1] - 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2]) != destination:
+        #     return True
+        
+        # # -x, -y direction
+        # if (coordinate[0] - 1, coordinate[1] - 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2]) != destination:
+        #     return True
+        
+        # # -x, +y direction
+        # if (coordinate[0] - 1, coordinate[1] + 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2]) != destination:
+        #     return True
+
+            
+        return False

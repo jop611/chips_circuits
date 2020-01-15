@@ -15,8 +15,10 @@ def a_star(netlist):
     i = 0
 
     # iterate over all connections in netlist
-    for connection in netlist.netlist:        
-        
+    while len(netlist.netlist) > 0:        
+        connection = randomize(netlist.netlist)
+        netlist.netlist.remove(connection)
+
         # coordinates of chip_a and chip_b
         chip_a = connection[0]
         chip_b = connection[1]
@@ -70,7 +72,7 @@ def a_star(netlist):
                     if netlist.check_if_chip((temp_coordinate[0], temp_coordinate[1], temp_coordinate[2] - 1)):
                         cost += 10
                     if netlist.penalty(temp_coordinate, destination):
-                        
+                        # print(True)
                         cost += 1
 
                     priorities.append((temp_coordinate, cost))
@@ -87,7 +89,8 @@ def a_star(netlist):
                 y_a = priorities[0][0][1]
                 z_a = priorities.pop(0)[0][2]
             except IndexError:
-                return False
+                # print(connection)
+                return "No paths to destination available"
         
         # trace route from destination to origin
         netlist.path[connection] = trace(paths, (x_a, y_a, z_a))
@@ -95,4 +98,4 @@ def a_star(netlist):
         # convert path coordinates to x-, y-, z- coordinate lists for visualization via matplotlib
         netlist.path_plot[connection]  = matlib_convert(netlist.path[connection])           
     
-    return True
+    return "End of test"
