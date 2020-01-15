@@ -37,10 +37,6 @@ def main():
     plot(netlist.print.x_list, netlist.print.y_list, netlist.print.z_list, netlist.print.boundaries, netlist.path_plot)
     
     
-
-
-
-
 if __name__ == "__main__":
     main()
     
