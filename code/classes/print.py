@@ -1,5 +1,9 @@
-from code.classes.netlist import *
+"""
+Print het grid met alle netlist punten
 
+(C) 2020 Teamname, Amsterdam, The Netherlands
+"""
+from code.classes.netlist import *
 
 class Print():
     def __init__(self, print_nr):
@@ -16,8 +20,10 @@ class Print():
         print(self.boundaries)
 
     def load_print(self, print_nr):
+        """ Load chips in grid """
         chips = {}
 
+        # comment
         with open(f'gates&netlists/chip_{print_nr}/print_{print_nr}.csv', newline='') as csvfile:
             reader = csv.reader(csvfile)
             for chip, x, y in reader:
@@ -32,9 +38,7 @@ class Print():
                     if int(x) > self.max_x:
                        self.max_x = int(x)
                     if int(y) > self.max_y:
-                        self.max_y = int(y) 
+                        self.max_y = int(y)
                 except ValueError:
                     pass
         return chips
-
-        

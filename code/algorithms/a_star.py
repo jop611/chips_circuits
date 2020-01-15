@@ -1,14 +1,15 @@
+"""
+A*-algorithm for pathfinding between coordinates
+"""
+
 from code.classes.netlist import *
 from code.classes.print import *
 from code.algorithms.constraints import *
-from code.algorithms.helpers import * 
+from code.algorithms.helpers import *
 
 
 def a_star(netlist):
-    """
-    A*-algorithm for pathfinding between coordinates
-    """
-
+    """ """
     # hardcoded list of all possible directions (north, east, south, west, up, down)
     directions = [(-1, 0, 0), (0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 1, 0), (0, 0, 1)]
     i = 0
@@ -37,7 +38,7 @@ def a_star(netlist):
         passed_coordinates = []
         priorities = []
         paths = {}
-       
+
         while x_a != x_b or y_a != y_b or z_a != z_b:
             current_coordinate = (x_a, y_a, z_a)
 

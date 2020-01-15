@@ -1,3 +1,4 @@
+
 import queue
 from code.classes.netlist import *
 from code.classes.print import *
@@ -7,7 +8,6 @@ from code.algorithms.helpers import *
 def valid(grid, moves, start, end):
     start = start
     end = end
-
 
     for move in moves:
         if move == "L":
@@ -28,7 +28,6 @@ def valid(grid, moves, start, end):
             return False
 
     return True
-
 
 def end(grid, moves, start, end):
     start = start
@@ -51,7 +50,6 @@ def end(grid, moves, start, end):
         return True
 
     return False
-
 
 # MAIN ALGORITHM
 start = connection[0]

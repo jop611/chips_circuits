@@ -1,3 +1,8 @@
+"""
+wat doet deze file
+
+(C) 2020 Teamname, Amsterdam, The Netherlands
+"""
 import csv
 from code.classes.print import *
 from code.algorithms.constraints import *
@@ -7,15 +12,13 @@ class Netlist():
         self.path_plot = {}
         self.path = {}
         self.print = Print(print_nr)
-        self.lowerbound = 0               
-        self.netlist = self.load_netlist(print_nr, netlist_nr) 
+        self.lowerbound = 0
+        self.netlist = self.load_netlist(print_nr, netlist_nr)
         self.length = 0
-        # print(self.netlist)
         print()
-        
 
-    
     def load_netlist(self, print_nr, netlist_nr):
+        """ Load selected netlist """
 
         netlist = []
         with open(f'gates&netlists/chip_{print_nr}/netlist_{netlist_nr}.csv', newline='') as csvfile:
@@ -31,78 +34,30 @@ class Netlist():
         return netlist
 
     def check_if_path(self, coordinate):
+        """ Check if path has been used """
+
         for connection in self.path:
             if coordinate in self.path[connection]:
                 return True
         return False
 
-
     def check_if_chip(self, coordinate):
+        """ Check if path contains chip """
+
         for chip in self.print.chips:
             if coordinate == self.print.chips[chip]:
                 return True
         return False
 
     def check_if_right_chip(self, coordinate, destination):
+        """ Check if destination chip has been reached """
+
         if coordinate == destination:
             return True
         return False
 
-
     def score(self):
+        """ Amount of conection made """
+
         for connection in self.path:
             self.length += len(self.path[connection]) - 1
-
-
-    def connect(self, connection):
-        self.path[connection] = []
-
-        
-        chip_a = connection[0]
-        chip_b = connection[1]
-        print(connection)
-        x_a = self.print.chips[chip_a][0]
-        y_a = self.print.chips[chip_a][1]
-        x_b = self.print.chips[chip_b][0]
-        y_b = self.print.chips[chip_b][1]
-        
-        path_x = [x_a]
-        path_y = [y_a]
-
-        print(f"chip a: {x_a}, {y_a}\nchip_b: {x_b}, {y_b}")
-
-        diff_x = x_b - x_a
-        diff_y = y_b - y_a
-
-        print(f"Zo veel in de x richting bewegen: {diff_x}")
-        print(f"Zo veel in de y richting bewegen: {diff_y}")
-
-        while x_a != x_b or y_a != y_b:
-            if diff_x < 0:
-
-                x_a -= 1
-                diff_x = x_b - x_a 
-            elif diff_x > 0:
-                # self.check_for_chip((x_a + 1, y_a))
-                x_a += 1  
-                diff_x = x_b - x_a     
-            elif diff_y < 0:
-                # self.check_for_chip((x_a, y_a - 1))
-                y_a -= 1
-                diff_y = y_b - y_a
-            elif diff_y > 0:
-                # self.check_for_chip((x_a, y_a + 1))
-                y_a += 1
-                diff_y = y_b - y_a
-
-            self.path[connection].append((x_a, y_a))
-            
-            path_x.append(x_a)
-            path_y.append(y_a)
-            
-        
-        self.path_plot[connection] = (path_x, path_y)
-        print(self.path_plot[connection])
-
-        print(self.path[connection])
-
