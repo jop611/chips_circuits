@@ -6,16 +6,24 @@ wat doet deze file
 
 import csv
 from code.classes.print import *
-from code.algorithms.constraints import *
+
 
 class Netlist():
     def __init__(self, print_nr, netlist_nr):
         self.path_plot = {}
         self.path = {}
-        self.print = Print(print_nr)
+        self.connections_count = {}
+        
         self.lowerbound = 0
-        self.netlist = self.load_netlist(print_nr, netlist_nr)
+        self.chip_occurences = []
+        self.connections_sorted = []
+        self.connections_count = {}
         self.length = 0
+        self.print = Print(print_nr)
+        self.netlist = self.load_netlist(print_nr, netlist_nr)
+       
+        # self.count_connections()
+
         print()
 
     def load_netlist(self, print_nr, netlist_nr):
@@ -25,13 +33,38 @@ class Netlist():
         with open(f'gates&netlists/chip_{print_nr}/netlist_{netlist_nr}.csv', newline='') as csvfile:
             reader = csv.reader(csvfile)
             for chip_a, chip_b in reader:
+
+                # keep track of amount of occurences of gate in netlist
                 try:
-                    manhattan_distance = abs(self.print.chips[int(chip_b)][0] - self.print.chips[int(chip_a)][0]) + abs(self.print.chips[int(chip_b)][1] - self.print.chips[int(chip_a)][1])
-                    netlist.append((int(chip_a), int(chip_b), manhattan_distance))
-                    self.lowerbound += manhattan_distance
+                    self.connections_count[int(chip_a)] += 1
+                except KeyError:
+                    self.connections_count[int(chip_a)] = 1
                 except ValueError:
                     pass
-            netlist.sort(key=lambda connection: connection[2])
+
+                try:
+                    self.connections_count[int(chip_b)] += 1
+                except KeyError:
+                    self.connections_count[int(chip_b)] = 1
+                except ValueError:
+                    pass
+
+                try:
+                    manhattan_distance = abs(self.print.chips[int(chip_b)][0] - self.print.chips[int(chip_a)][0]) + abs(self.print.chips[int(chip_b)][1] - self.print.chips[int(chip_a)][1])
+                    netlist.append((int(chip_a), int(chip_b), manhattan_distance))        
+                    self.lowerbound += manhattan_distance
+                    self.chip_occurences.append(int(chip_a))
+                    self.chip_occurences.append(int(chip_b))
+                except ValueError:
+                    pass
+        netlist.sort(key=lambda connection: ((-self.connections_count[connection[0]] - self.connections_count[connection[1]])/2, connection[2]))
+        # for chip in self.connections_count:
+        #     if self.connections_count[chip] == 5:
+        #         for connection in netlist:
+        #             if connection[0] == chip or connection[1] == chip:
+        #                 netlist.remove(connection)                  
+        #                 netlist.insert(0, connection)
+        # print
         return netlist
 
     def check_if_path(self, coordinate):
@@ -62,3 +95,65 @@ class Netlist():
 
         for connection in self.path:
             self.length += len(self.path[connection]) - 1
+
+
+    def penalty(self, coordinate, origin, destination):
+        # +x direction
+        if (coordinate[0] + 1, coordinate[1], coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2]) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2]) != origin:
+            return True
+        
+        # -x direction
+        if (coordinate[0] - 1, coordinate[1], coordinate[2]) in self.print.chips_locations and (coordinate[0] - 1, coordinate[1], coordinate[2]) != destination and (coordinate[0] - 1, coordinate[1], coordinate[2]) != origin:
+            return True
+
+        # +y direction
+        if (coordinate[0], coordinate[1] + 1, coordinate[2]) in self.print.chips_locations and (coordinate[0], coordinate[1] + 1, coordinate[2]) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2]) != origin:
+            return True
+
+        # -y direction
+        if (coordinate[0], coordinate[1] - 1, coordinate[2]) in self.print.chips_locations and (coordinate[0], coordinate[1] - 1, coordinate[2]) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2]) != origin:
+            return True
+
+        # -z direction
+        if (coordinate[0], coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0], coordinate[1], coordinate[2] - 1) != destination and (coordinate[0], coordinate[1], coordinate[2] - 1) != origin:
+            return True
+
+        # # +x, +y direction
+        # if (coordinate[0] + 1, coordinate[1] + 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1] + 1, coordinate[2]) != destination and (coordinate[0] + 1, coordinate[1] + 1, coordinate[2]) != origin:
+        #     return True
+        
+        # # +x, -y direction
+        # if (coordinate[0] + 1, coordinate[1] - 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1] - 1, coordinate[2]) != destination and (coordinate[0] + 1, coordinate[1] - 1, coordinate[2]) != origin: 
+        #     return True
+        
+        # # -x, -y direction
+        # if (coordinate[0] - 1, coordinate[1] - 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] - 1, coordinate[1] - 1, coordinate[2]) != destination and (coordinate[0] - 1, coordinate[1] - 1, coordinate[2]) != origin:
+        #     return True
+        
+        # # -x, +y direction
+        # if (coordinate[0] - 1, coordinate[1] + 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] - 1, coordinate[1] + 1, coordinate[2]) != destination and (coordinate[0] - 1, coordinate[1] + 1, coordinate[2]) != origin:
+        #     return True
+
+            
+        return False
+
+    # def count_connections(self):
+    #     for i in range(self.print.chip_count):
+    #         # self.chip_occurences.count(i + 1)
+    #         print(f"{i + 1}: {self.chip_occurences.count(i + 1)}")
+    #         self.connections_count[i + 1] = self.chip_occurences.count(i + 1)
+            
+    #     return None
+
+    
+    def clear(self):
+        self.path_plot.clear()
+        self.path.clear()
+        self.length = 0
+        return None
+        
+       
+        
+
+
+

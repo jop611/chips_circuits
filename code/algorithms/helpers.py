@@ -9,8 +9,7 @@ def trace(paths, destination):
 
     coordinates = destination
     path = [coordinates]
-    print(f"Destination: {destination}")
-
+    
     # iterate over coordinates
     while coordinates in paths:
         coordinates = paths[coordinates]
@@ -30,3 +29,5 @@ def matlib_convert(path):
         y_list.append(coordinate[1])
         z_list.append(coordinate[2])
     return (x_list, y_list, z_list)
+
+

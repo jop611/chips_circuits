@@ -14,9 +14,11 @@ class Print():
         self.x_list = []
         self.y_list = []
         self.z_list = []
+        self.chips_locations = []
         self.chips = self.load_print(print_nr)
-
-        self.boundaries = ((0, 0, 0), (self.max_x + 1, self.max_y + 1, 0))
+        self.boundaries = ((0, 0, 0), (self.max_x + 1, self.max_y + 1, 7))
+        self.chip_count = len(self.chips)
+        print(self.chip_count)
 
         print(self.boundaries)
 
@@ -33,6 +35,7 @@ class Print():
                     self.x_list.append(int(x))
                     self.y_list.append(int(y))
                     self.z_list.append(0)
+                    self.chips_locations.append((int(x), int(y), 0))
 
                     # set boundaries of grid
                     if int(x) > self.max_x:
