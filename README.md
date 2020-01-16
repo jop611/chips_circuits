@@ -1,5 +1,6 @@
-# Chips-Circuits
+# Chips & Circuits
 Teamname
+
 Jop, Navisa & Robel
 
 ## De opdracht
