@@ -16,7 +16,9 @@ class Print():
         self.chips_locations = []
         self.chips = self.load_print(print_nr)
         self.boundaries = ((0, 0, 0), (self.max_x + 1, self.max_y + 1, 7))
-        
+        self.chip_count = len(self.chips)
+        print(self.chip_count)
+
         print(self.boundaries)
 
     def load_print(self, print_nr):

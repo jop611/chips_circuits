@@ -1,15 +1,13 @@
-"""
-A*-algorithm for pathfinding between coordinates
-"""
-
 from code.classes.netlist import *
 from code.classes.print import *
-from code.algorithms.random import *
-from code.algorithms.helpers import *
+from code.algorithms.helpers import * 
 
 
 def a_star(netlist):
-    """ """
+    """
+    A*-algorithm for pathfinding between coordinates
+    """
+
     # hardcoded list of all possible directions (north, east, south, west, up, down)
     directions = [(-1, 0, 0), (0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 1, 0), (0, 0, 1)]
     i = 0
@@ -38,7 +36,7 @@ def a_star(netlist):
         passed_coordinates = []
         priorities = []
         paths = {}
-
+       
         while x_a != x_b or y_a != y_b or z_a != z_b:
             current_coordinate = (x_a, y_a, z_a)
 
@@ -66,12 +64,10 @@ def a_star(netlist):
                     paths[temp_coordinate] = current_coordinate
 
                     # assign cost penalty if coordinate is close to a wrong chip
-
-                    if netlist.check_if_chip((temp_coordinate[0], temp_coordinate[1], temp_coordinate[2] - 1)):
-                        cost += 10
-                    if netlist.penalty(temp_coordinate, destination):
-                        
-                        cost += 1
+                    # if netlist.check_if_chip((temp_coordinate[0], temp_coordinate[1], temp_coordinate[2] - 1)):
+                    #     cost += 3
+                    if netlist.penalty(temp_coordinate, origin, destination):
+                        cost += 2
 
                     priorities.append((temp_coordinate, cost))
 
@@ -87,6 +83,16 @@ def a_star(netlist):
                 y_a = priorities[0][0][1]
                 z_a = priorities.pop(0)[0][2]
             except IndexError:
+                # print("______")
+                # print(connection)
+                # print(netlist.netlist)
+                # print()
+                netlist.clear()
+                netlist.netlist.insert(0, netlist.netlist.pop(netlist.netlist.index(connection)))
+                # netlist.netlist.remove(connection)
+                # print(netlist.netlist)
+                # print("______")
+
                 return False
         
         # trace route from destination to origin

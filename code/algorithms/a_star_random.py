@@ -2,6 +2,7 @@
 A*-algorithm for pathfinding between coordinates
 """
 
+import copy
 from code.classes.netlist import *
 from code.classes.print import *
 from code.algorithms.random import *
@@ -14,10 +15,12 @@ def a_star(netlist):
     directions = [(-1, 0, 0), (0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 1, 0), (0, 0, 1)]
     i = 0
 
+    netlist_copy = copy.deepcopy(netlist.netlist)
+    
     # iterate over all connections in netlist
-    while len(netlist.netlist) > 0:        
-        connection = randomize(netlist.netlist)
-        netlist.netlist.remove(connection)
+    while len(netlist_copy) > 0:        
+        connection = randomize(netlist_copy)
+        netlist_copy.remove(connection)
 
         # coordinates of chip_a and chip_b
         chip_a = connection[0]
@@ -90,7 +93,7 @@ def a_star(netlist):
                 z_a = priorities.pop(0)[0][2]
             except IndexError:
                 # print(connection)
-                return "No paths to destination available"
+                return False
         
         # trace route from destination to origin
         netlist.path[connection] = trace(paths, (x_a, y_a, z_a))
@@ -98,4 +101,4 @@ def a_star(netlist):
         # convert path coordinates to x-, y-, z- coordinate lists for visualization via matplotlib
         netlist.path_plot[connection]  = matlib_convert(netlist.path[connection])           
     
-    return "End of test"
+    return True
