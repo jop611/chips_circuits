@@ -14,7 +14,7 @@ Alle connecties tussen de gates moeten gelegd worden met een zo laag mogelijke k
 In het plaatje is te zien in 2D hoe de connecties A-B, A-C,C-E, D-B, D-E gemaakt worden met zo weinig mogelijk stappen.
 ![Voorbeeld van de connectie die gemaakt moet worden tussen de gates met een zo kort mogelijke afstand.](pics/voorbeeld.png)
 
-## Constraints:
+## Beperkingen:
 - De lijnen mogen niet langs dezelfde route gaan
 - De lijnen mogen elkaar niet kruisen
 - De lijn mag niet buiten de grid komen, 17x12 voor print 1 en 17x16 voor print 2
