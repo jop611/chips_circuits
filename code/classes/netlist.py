@@ -9,6 +9,8 @@ from code.classes.print import *
 
 class Netlist():
     def __init__(self, print_nr, netlist_nr):
+        self.print_nr = print_nr
+        self.netlist_nr = netlist_nr
         self.path_plot = {}
         self.path = {}
         self.connections_count = {}
@@ -92,8 +94,9 @@ class Netlist():
     def score(self):
         """ Amount of conection made """
 
+        self.length = 0
         for connection in self.path:
-            self.length += len(self.path[connection]) - 1
+            self.length += (len(self.path[connection]) - 1)
 
 
     def penalty(self, coordinate, origin, destination):
@@ -115,6 +118,21 @@ class Netlist():
 
         # -z direction
         if (coordinate[0], coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0], coordinate[1], coordinate[2] - 1) != destination and (coordinate[0], coordinate[1], coordinate[2] - 1) != origin:
+            return True
+
+        if (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != origin:
+            return True
+        
+        # -x direction
+        if (coordinate[0] - 1, coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0] - 1, coordinate[1], coordinate[2] - 1) != destination and (coordinate[0] - 1, coordinate[1], coordinate[2 - 1]) != origin:
+            return True
+
+        # +y direction
+        if (coordinate[0], coordinate[1] + 1, coordinate[2] - 1) in self.print.chips_locations and (coordinate[0], coordinate[1] + 1, coordinate[2] - 1) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != origin:
+            return True
+
+        # -y direction
+        if (coordinate[0], coordinate[1] - 1, coordinate[2] - 1) in self.print.chips_locations and (coordinate[0], coordinate[1] - 1, coordinate[2] - 1) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != origin:
             return True
 
         # # +x, +y direction
@@ -150,6 +168,33 @@ class Netlist():
         self.path.clear()
         self.length = 0
         return None
+    
+
+    def test(self):
+        for connection in self.netlist:
+            try:
+                print(self.path[connection])
+            except KeyError:
+                print("Shit toch niet goed")
+    
+    def save_result(self):
+        with open(f'results/print_{self.print_nr}/netlist_{self.netlist_nr}_{self.length}.csv', 'a', newline='') as csvfile:
+            writer = csv.writer(csvfile, delimiter=' ')
+            writer.writerow([self.length])
+            writer.writerow([self.netlist])
+
+        with open(f'results/print_{self.print_nr}/netlist_{self.netlist_nr}_{self.length}.csv', 'a', newline='') as csvfile:
+            fieldnames = ['connection', 'path']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            # writer.writerow(self.length)
+            # writer.writerow(self.netlist)
+            writer.writeheader()
+            for connection in self.netlist:
+                writer.writerow({'connection': connection, 'path': self.path[connection]})
+        return None
+
+
+        
         
        
         

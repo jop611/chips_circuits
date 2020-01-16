@@ -11,7 +11,12 @@ def a_star(netlist):
     # hardcoded list of all possible directions (north, east, south, west, up, down)
     directions = [(-1, 0, 0), (0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 1, 0), (0, 0, 1)]
     i = 0
-
+    netlist.netlist = [(11, 8, 10), (8, 10, 13), (8, 14, 5), (11, 5, 4), (16, 6, 16), 
+                       (16, 9, 10), (16, 22, 2), (24, 5, 11), (14, 19, 3), (4, 6, 4), 
+                       (17, 10, 8), (10, 14, 14), (20, 6, 9), (4, 16, 20), (16, 18, 7), 
+                       (3, 21, 17), (21, 11, 7), (23, 14, 7), (6, 8, 1), (4, 5, 13), 
+                       (4, 24, 24), (4, 1, 14), (21, 20, 15), (23, 17, 5), (23, 12, 7), 
+                       (20, 3, 12), (24, 9, 14), (2, 1, 5), (12, 25, 7), (7, 15, 7)]
     # iterate over all connections in netlist
     for connection in netlist.netlist:        
         
@@ -101,4 +106,7 @@ def a_star(netlist):
         # convert path coordinates to x-, y-, z- coordinate lists for visualization via matplotlib
         netlist.path_plot[connection]  = matlib_convert(netlist.path[connection])           
     
+    netlist.test()
+    netlist.score()
+    netlist.save_result()
     return True
