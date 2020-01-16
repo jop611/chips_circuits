@@ -12,6 +12,7 @@ Het rooster bestaat uit 7 lagen. Dit betekent dat de connecties ook omhoog en om
 Alle connecties tussen de gates moeten gelegd worden met een zo laag mogelijke kostenplaatje.
 
 In het plaatje is te zien in 2D hoe de connecties A-B, A-C,C-E, D-B, D-E gemaakt worden met zo weinig mogelijk stappen.
+
 ![Voorbeeld van de connectie die gemaakt moet worden tussen de gates met een zo kort mogelijke afstand.](pics/voorbeeld.png)
 
 ## Beperkingen:
