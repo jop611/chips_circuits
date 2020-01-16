@@ -22,7 +22,7 @@ In het plaatje is te zien in 2D hoe de connecties A-B, A-C,C-E, D-B, D-E gemaakt
 ## Werkwijze:
 Voor deze opdracht is er gebruikt gemaakt van het A* algoritme. (uitleg algoritme)
 
-##Aanpassingen:
+## Aanpassingen:
 Tijdens het generenen van de connecties werden niet alle connecties gemaakt. Dit kwam omdat eerdere gemaakte connecties sommige gates afsluitte waardoor er geen connecties gemaakt konden worden met die gates. Dit is te zien in de afbeelding hieronder met de desbetreffende gate omcirkelt in rood.
 
 ![Gate die geen connecties meer kan maken omdat het afgesloten is door andere gelegde connecties.](pics/gatecirkel.jpg)
