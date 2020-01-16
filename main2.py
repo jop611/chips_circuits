@@ -3,6 +3,7 @@ wat doet deze file
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
+
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
