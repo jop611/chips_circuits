@@ -29,7 +29,7 @@ def main():
     # print(netlist.netlist)
     while not a_star(netlist):
         i += 1
-        print(i)
+        # print(i)
     
     print(netlist.netlist)
     print()
