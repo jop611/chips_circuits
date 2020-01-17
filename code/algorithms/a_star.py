@@ -11,12 +11,12 @@ def a_star(netlist):
     # hardcoded list of all possible directions (north, east, south, west, up, down)
     directions = [(-1, 0, 0), (0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 1, 0), (0, 0, 1)]
     i = 0
-    netlist.netlist = [(11, 8, 10), (8, 10, 13), (8, 14, 5), (11, 5, 4), (16, 6, 16), 
-                       (16, 9, 10), (16, 22, 2), (24, 5, 11), (14, 19, 3), (4, 6, 4), 
-                       (17, 10, 8), (10, 14, 14), (20, 6, 9), (4, 16, 20), (16, 18, 7), 
-                       (3, 21, 17), (21, 11, 7), (23, 14, 7), (6, 8, 1), (4, 5, 13), 
-                       (4, 24, 24), (4, 1, 14), (21, 20, 15), (23, 17, 5), (23, 12, 7), 
-                       (20, 3, 12), (24, 9, 14), (2, 1, 5), (12, 25, 7), (7, 15, 7)]
+    # netlist.netlist = [(11, 8, 10), (8, 10, 13), (8, 14, 5), (11, 5, 4), (16, 6, 16), 
+    #                    (16, 9, 10), (16, 22, 2), (24, 5, 11), (14, 19, 3), (4, 6, 4), 
+    #                    (17, 10, 8), (10, 14, 14), (20, 6, 9), (4, 16, 20), (16, 18, 7), 
+    #                    (3, 21, 17), (21, 11, 7), (23, 14, 7), (6, 8, 1), (4, 5, 13), 
+    #                    (4, 24, 24), (4, 1, 14), (21, 20, 15), (23, 17, 5), (23, 12, 7), 
+    #                    (20, 3, 12), (24, 9, 14), (2, 1, 5), (12, 25, 7), (7, 15, 7)]
     # iterate over all connections in netlist
     for connection in netlist.netlist:        
         
@@ -41,7 +41,8 @@ def a_star(netlist):
         passed_coordinates = []
         priorities = []
         paths = {}
-       
+        blocking_paths = []
+
         while x_a != x_b or y_a != y_b or z_a != z_b:
             current_coordinate = (x_a, y_a, z_a)
 
@@ -56,6 +57,8 @@ def a_star(netlist):
 
                 # assign cost to coordinate based on manhattan distance to destination
                 cost = abs(x_b - temp_x_a) + abs(y_b - temp_y_a) + abs(z_b - temp_z_a)
+                
+                # print(netlist.check_if_path(temp_coordinate))
                 
                 # verify that temporary coordinates are valid coordinates
                 if ((not netlist.check_if_path(temp_coordinate) or netlist.check_if_chip(temp_coordinate))
@@ -72,34 +75,46 @@ def a_star(netlist):
                     # if netlist.check_if_chip((temp_coordinate[0], temp_coordinate[1], temp_coordinate[2] - 1)):
                     #     cost += 3
                     if netlist.penalty(temp_coordinate, origin, destination):
-                        cost += 2
+                        cost += 1
 
                     priorities.append((temp_coordinate, cost))
 
-            # sort valid coordinates on lowest cost to destination
-            priorities.sort(key=lambda coordinate: coordinate[1])
-           
-            # save coordinate as passed coordinate
-            passed_coordinates.append(current_coordinate)
 
-            # set new x-, y-, z- coordinates
+                # sort valid coordinates on lowest cost to destination
+            priorities.sort(key=lambda coordinate: coordinate[1])
+            
+                # save coordinate as passed coordinate
+            passed_coordinates.append(current_coordinate)
             try:
+                    # set new x-, y-, z- coordinates
+                    # try:
                 x_a = priorities[0][0][0]
                 y_a = priorities[0][0][1]
                 z_a = priorities.pop(0)[0][2]
-            except IndexError:
-                # print("______")
-                # print(connection)
-                # print(netlist.netlist)
-                # print()
-                netlist.clear()
-                netlist.netlist.insert(0, netlist.netlist.pop(netlist.netlist.index(connection)))
-                # netlist.netlist.remove(connection)
-                # print(netlist.netlist)
-                # print("______")
 
+            except IndexError:
+                
+                # except IndexError:
+                #     # print("______")
+                #     # print(connection)
+                #     # print(netlist.netlist)
+                #     # print()
+                #     try:
+                #         netlist.dick[connection] += 1
+                #     except KeyError:
+                #         netlist.dick[connection] = 1
+                netlist.clear()
+                    # netlist.netlist.insert(netlist.netlist.index(connection) - 1, netlist.netlist.pop(netlist.netlist.index(connection)))
+                netlist.netlist.insert(0, netlist.netlist.pop(netlist.netlist.index(connection)))
+
+
+                #     # netlist.netlist.remove(connection)
+                #     # print(netlist.netlist)
+                #     # print("______")
+
+                #     return False
                 return False
-        
+                
         # trace route from destination to origin
         netlist.path[connection] = trace(paths, (x_a, y_a, z_a))
         

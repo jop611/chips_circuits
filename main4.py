@@ -21,15 +21,23 @@ def main():
 
     netlist = Netlist(print_nr, netlist_nr)
     # backup = copy.deepcopy(netlist.netlist)
-    i = 0
+    i = 1
     # while not (a_star(netlist)):
     #     i += 1
         # print("Fail")
     # print(a_star(netlist))
     # print(netlist.netlist)
+    for i in range(int(input("Amount of iterations: "))):
+        a_star(netlist)
+    print(netlist.dick)
+    print("_____")
+    print(netlist.netlist)
+    netlist.sortdick()
+    print(netlist.netlist)
+    print("_____")
     while not a_star(netlist):
-        i += 1
-        print(i)
+        i += 1    
+
     
     print(netlist.netlist)
     print()

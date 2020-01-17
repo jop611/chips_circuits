@@ -21,8 +21,10 @@ class Netlist():
         self.connections_sorted = []
         self.connections_count = {}
         self.length = 0
+        self.dick = {}
         self.print = Print(print_nr)
         self.netlist = self.load_netlist(print_nr, netlist_nr)
+        print(self.lowerbound)
        
         # self.count_connections()
 
@@ -60,6 +62,7 @@ class Netlist():
                 except ValueError:
                     pass
         netlist.sort(key=lambda connection: ((-self.connections_count[connection[0]] - self.connections_count[connection[1]])/2, connection[2]))
+        
         # for chip in self.connections_count:
         #     if self.connections_count[chip] == 5:
         #         for connection in netlist:
@@ -72,28 +75,22 @@ class Netlist():
     def check_if_path(self, coordinate):
         """ Check if path has been used """
 
-        for connection in self.path:
-            if coordinate in self.path[connection]:
-                return True
-        return False
+        return coordinate in [path for connection in self.path.values() for path in connection]
+
 
     def check_if_chip(self, coordinate):
-        """ Check if path contains chip """
+        """Check if input coordinate is a location of a chip"""
 
-        for chip in self.print.chips:
-            if coordinate == self.print.chips[chip]:
-                return True
-        return False
+        return coordinate in self.print.chips.values()
+
 
     def check_if_right_chip(self, coordinate, destination):
-        """ Check if destination chip has been reached """
+        """Check if input coordinate is destination coordinate"""
 
-        if coordinate == destination:
-            return True
-        return False
+        return coordinate == destination
 
     def score(self):
-        """ Amount of conection made """
+        """ Amount of connections made """
 
         self.length = 0
         for connection in self.path:
@@ -121,20 +118,20 @@ class Netlist():
         if (coordinate[0], coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0], coordinate[1], coordinate[2] - 1) != destination and (coordinate[0], coordinate[1], coordinate[2] - 1) != origin:
             return True
 
-        if (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != origin:
-            return True
+        # if (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != origin:
+        #     return True
         
-        # -x direction
-        if (coordinate[0] - 1, coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0] - 1, coordinate[1], coordinate[2] - 1) != destination and (coordinate[0] - 1, coordinate[1], coordinate[2 - 1]) != origin:
-            return True
+        # # -x direction
+        # if (coordinate[0] - 1, coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0] - 1, coordinate[1], coordinate[2] - 1) != destination and (coordinate[0] - 1, coordinate[1], coordinate[2 - 1]) != origin:
+        #     return True
 
-        # +y direction
-        if (coordinate[0], coordinate[1] + 1, coordinate[2] - 1) in self.print.chips_locations and (coordinate[0], coordinate[1] + 1, coordinate[2] - 1) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != origin:
-            return True
+        # # +y direction
+        # if (coordinate[0], coordinate[1] + 1, coordinate[2] - 1) in self.print.chips_locations and (coordinate[0], coordinate[1] + 1, coordinate[2] - 1) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != origin:
+        #     return True
 
-        # -y direction
-        if (coordinate[0], coordinate[1] - 1, coordinate[2] - 1) in self.print.chips_locations and (coordinate[0], coordinate[1] - 1, coordinate[2] - 1) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != origin:
-            return True
+        # # -y direction
+        # if (coordinate[0], coordinate[1] - 1, coordinate[2] - 1) in self.print.chips_locations and (coordinate[0], coordinate[1] - 1, coordinate[2] - 1) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != origin:
+        #     return True
 
         # # +x, +y direction
         # if (coordinate[0] + 1, coordinate[1] + 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1] + 1, coordinate[2]) != destination and (coordinate[0] + 1, coordinate[1] + 1, coordinate[2]) != origin:
@@ -193,6 +190,27 @@ class Netlist():
             for connection in self.netlist:
                 writer.writerow({'connection': connection, 'path': self.path[connection]})
         return None
+
+
+    def sortdick(self):
+        for connection in self.netlist:
+            if connection not in self.dick:
+                self.dick[connection] = 0
+        
+        self.netlist.sort(key=lambda connection: self.dick[connection], reverse=True)
+        
+        
+        return None
+
+    def blocking_path(self, coordinate):
+
+        # if coordinate in [path for connection in self.path.values() for path in connection]:
+        #     return connection
+        for connection in self.path:
+            if coordinate in self.path[connection]:
+                return connection
+        return None
+
 
 
         
