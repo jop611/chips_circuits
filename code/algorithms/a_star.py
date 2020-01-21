@@ -53,7 +53,7 @@ def a_star(netlist):
 
             # iterate over all possible directions
             for direction in directions:
-                cost = 0
+                # cost = 0
                 temp_x_a = x_a + direction[0]
                 temp_y_a = y_a + direction[1]
                 temp_z_a = z_a + direction[2]
@@ -68,7 +68,7 @@ def a_star(netlist):
                 
                 # verify that temporary coordinates are valid coordinates
                 if ((not netlist.check_if_path(temp_coordinate) or netlist.check_if_chip(temp_coordinate))
-                     and not temp_coordinate in passed_coordinates and not (temp_coordinate, cost) in priorities
+                     and not temp_coordinate in paths and not (temp_coordinate, cost) in priorities
                      and ((netlist.check_if_chip(temp_coordinate) and temp_coordinate == destination) or not netlist.check_if_chip(temp_coordinate))
                      and (not temp_x_a < min_x and not temp_x_a > max_x 
                           and not temp_y_a < min_y and not temp_y_a > max_y
@@ -102,8 +102,8 @@ def a_star(netlist):
                         cost -= 2
 
                     
-                    cost -= (temp_z_a + 1)
-                    passed_coordinates.append(temp_coordinate)
+                    cost -= (temp_z_a * 2)
+                    # passed_coordinates.append(temp_coordinate)
                     priorities.append((temp_coordinate, cost))
                    
                 # elif netlist.check_if_path(temp_coordinate) and not netlist.check_if_chip(temp_coordinate) and len(priorities) == 0 and direction != (0, 0, 1) and direction != (0, 0, -1):
@@ -129,35 +129,39 @@ def a_star(netlist):
 
                 netlist.clear()
               
-                # print("______")
+                print("______")
+                print(netlist.netlist)
              
-                current_index = netlist.netlist.index(connection)
+                # current_index = netlist.netlist.index(connection)
                 # netlist.successful_connections = current_index
                 
+                netlist.netlist.insert(0, netlist.netlist.pop(netlist.netlist.index(connection)))
 
-                if current_index != netlist.previous_index:
+                # if current_index != netlist.previous_index:
                     
-                    netlist.netlist.insert(netlist.netlist.index(connection) - 1, netlist.netlist.pop(netlist.netlist.index(connection)))
-                    # netlist.previous_connection = connection
+                #     netlist.netlist.insert(netlist.netlist.index(connection) - 1, netlist.netlist.pop(netlist.netlist.index(connection)))
+                #     # netlist.previous_connection = connection
                     
                     
                 
-                else:
-                    netlist.netlist.insert(0, netlist.netlist.pop(netlist.netlist.index(netlist.previous_connection)))
-                    netlist.netlist.insert(1, netlist.netlist.pop(netlist.netlist.index(connection)))
+                # else:
+
+                #     netlist.netlist.insert(0, netlist.netlist.pop(current_index))
+                #     netlist.netlist.insert(1, netlist.netlist.pop(netlist.netlist.index(netlist.previous_connection)))
                     # print(netlist.netlist.index(netlist.previous_connection))
                     # netlist.netlist.insert(netlist.netlist.index(netlist.previous_connection) - 1, netlist.netlist.pop(netlist.netlist.index(netlist.previous_connection)))
                     # netlist.netlist.insert(netlist.netlist.index(connection) - 1, netlist.netlist.pop(netlist.netlist.index(connection))) 
                    
 
                
-                netlist.previous_connection = connection
                 # netlist.previous_connection = connection
-                netlist.previous_index = current_index
-                
-                # print("______")
-                # print(netlist.netlist)
-                # print("______")
+                # # netlist.previous_connection = connection
+                # netlist.previous_index = current_index
+                print()
+                print(connection)
+                print()
+                print(netlist.netlist)
+                print("______")
 
                 #     return False
                 return False
@@ -169,7 +173,7 @@ def a_star(netlist):
         netlist.path_plot[connection]  = matlib_convert(netlist.path[connection])           
     # print("lol")
     print(netlist.test())
-    print(netlist.path)
+    # print(netlist.path)
     netlist.score()
     netlist.save_result()
     return True

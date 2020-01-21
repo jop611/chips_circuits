@@ -76,8 +76,10 @@ class Netlist():
                 highest_connection_count[connection] = self.connections_count[connection[1]]
 
         
-        netlist.sort(key=lambda connection: (highest_connection_count[connection], connection[2]))
+        netlist.sort(key=lambda connection: (highest_connection_count[connection], (self.connections_count[connection[0]] + self.connections_count[connection[1]]) / 2, -connection[2]), reverse=True)
         
+        # (highest_connection_count[connection],
+        # (self.connections_count[connection[0]] + self.connections_count[connection[1]] / 2),
         # for chip in self.connections_count:
         #     if self.connections_count[chip] == 5:
         #         for connection in netlist:

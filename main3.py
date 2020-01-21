@@ -35,6 +35,7 @@ def main():
     # # print(netlist.netlist)
     # print()
     netlist.score()
+    print(netlist.netlist)
     print(netlist.length)
     print("Success!!!")
     print(f"Tries: {i}")
