@@ -16,12 +16,7 @@ class Netlist():
         self.path_plot = {}
         self.path = {}
         self.connections_count = {}
-
-        self.successful_connections = 0
-        self.previous_index = 0
-        self.previous_connection = None
-
-
+        
         self.lowerbound = 0
         self.chip_occurences = []
         self.connections_sorted = []

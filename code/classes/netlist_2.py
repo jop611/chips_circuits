@@ -67,7 +67,16 @@ class Netlist():
                     self.chip_occurences.append(int(chip_b))
                 except ValueError:
                     pass
-        netlist.sort(key=lambda connection: ((-self.connections_count[connection[0]] - self.connections_count[connection[1]])/2, connection[2]))
+
+        highest_connection_count = {}
+        for connection in netlist:
+            if self.connections_count[connection[0]] > self.connections_count[connection[1]]:
+                highest_connection_count[connection] = self.connections_count[connection[0]]
+            else:
+                highest_connection_count[connection] = self.connections_count[connection[1]]
+
+        
+        netlist.sort(key=lambda connection: (highest_connection_count[connection], connection[2]))
         
         # for chip in self.connections_count:
         #     if self.connections_count[chip] == 5:

@@ -7,7 +7,7 @@ import csv
 import copy
 import matplotlib.pyplot as plt
 import numpy as np
-from code.classes.netlist import *
+from code.classes.netlist_2 import *
 from code.classes.print import *
 from code.algorithms.a_star import *
 from visualize import *

@@ -1,4 +1,4 @@
-from code.classes.netlist_2 import *
+from code.classes.netlist import *
 from code.classes.print import *
 from code.algorithms.helpers import * 
 
@@ -84,14 +84,11 @@ def a_star(netlist):
                     if netlist.penalty(temp_coordinate, origin, destination):
                         cost += 1
 
-                    if direction == (0, 0, 1):
-                        cost -= 3
-
                     priorities.append((temp_coordinate, cost))
-                # elif netlist.check_if_path(temp_coordinate) and not netlist.check_if_chip(temp_coordinate) and len(priorities) == 0 and direction != (0, 0, 1) and direction != (0, 0, -1):
+                elif netlist.check_if_path(temp_coordinate) and not netlist.check_if_chip(temp_coordinate) and len(priorities) == 0 and direction != (0, 0, 1) and direction != (0, 0, -1):
                     
-                #     blocked_coordinate = temp_coordinate
-                #     print(blocked_coordinate)
+                    blocked_coordinate = temp_coordinate
+                    print(blocked_coordinate)
 
                 # sort valid coordinates on lowest cost to destination
             priorities.sort(key=lambda coordinate: coordinate[1])
@@ -108,45 +105,25 @@ def a_star(netlist):
                 z_a = priorities.pop(0)[0][2]
 
             except IndexError:
-
+                
+                # except IndexError:
+                #     # print("______")
+                #     # print(connection)
+                #     # print(netlist.netlist)
+                #     # print()
+                #     try:
+                #         netlist.dick[connection] += 1
+                #     except KeyError:
+                #         netlist.dick[connection] = 1
+                netlist.blocking_path(blocked_coordinate)
                 netlist.clear()
-              
-                print("______")
-                print(connection)
-                print(netlist.netlist)
-                print()
-                current_index = netlist.netlist.index(connection)
-                # netlist.successful_connections = current_index
-                print("current index:")
-                print(current_index)
-                print(netlist.previous_index)
-                print(current_index != netlist.previous_index)
-                print("index(coordinate):")
-                print(netlist.netlist.index(connection))
-                print()
+                    # netlist.netlist.insert(netlist.netlist.index(connection) - 1, netlist.netlist.pop(netlist.netlist.index(connection)))
+                netlist.netlist.insert(0, netlist.netlist.pop(netlist.netlist.index(connection)))
 
-                if current_index != netlist.previous_index:
-                    
-                    netlist.netlist.insert(netlist.netlist.index(connection) - 1, netlist.netlist.pop(netlist.netlist.index(connection)))
-                    netlist.previous_connection = connection
-                    
-                    
-                
-                else:
-                    netlist.netlist.insert(1, netlist.netlist.pop(netlist.netlist.index(netlist.previous_connection)))
-                    netlist.netlist.insert(0, netlist.netlist.pop(netlist.netlist.index(connection)))
-                   
 
-                print()
-                print(connection)
-                print(netlist.previous_connection)
-                print()
-
-                # netlist.previous_connection = connection
-                netlist.previous_index = current_index
-                
-                # print(netlist.netlist)
-                print("______")
+                #     # netlist.netlist.remove(connection)
+                #     # print(netlist.netlist)
+                #     # print("______")
 
                 #     return False
                 return False
