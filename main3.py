@@ -7,7 +7,7 @@ import csv
 import copy
 import matplotlib.pyplot as plt
 import numpy as np
-from code.classes.netlist_2 import *
+from code.classes.netlist import *
 from code.classes.print import *
 from code.algorithms.a_star import *
 from visualize import *
@@ -30,21 +30,22 @@ def main():
     while not a_star(netlist):
         i += 1
         # print(i)
-    
-    print(netlist.netlist)
-    print()
+    # a_star(netlist)
+    # print("lol")
+    # # print(netlist.netlist)
+    # print()
     netlist.score()
     print(netlist.length)
     print("Success!!!")
     print(f"Tries: {i}")
-    print()
+    # print()
     # for connection in backup:
     #     try:
     #         pass
     #         # print(netlist.path[connection])
     #     except:
     #         KeyError
-    print()
+    # print()
     # print(len(netlist.path))
     plot(netlist.print.x_list, netlist.print.y_list, netlist.print.z_list, netlist.print.boundaries, netlist.path_plot, netlist.length)
 

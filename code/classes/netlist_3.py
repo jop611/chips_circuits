@@ -30,7 +30,7 @@ class Netlist():
         self.dick = {}
         self.print = Print(print_nr)
         self.netlist = self.load_netlist(print_nr, netlist_nr)
-        # print(self.lowerbound)
+        print(self.lowerbound)
        
         # self.count_connections()
 
@@ -67,16 +67,7 @@ class Netlist():
                     self.chip_occurences.append(int(chip_b))
                 except ValueError:
                     pass
-
-        highest_connection_count = {}
-        for connection in netlist:
-            if self.connections_count[connection[0]] > self.connections_count[connection[1]]:
-                highest_connection_count[connection] = self.connections_count[connection[0]]
-            else:
-                highest_connection_count[connection] = self.connections_count[connection[1]]
-
-        
-        netlist.sort(key=lambda connection: (highest_connection_count[connection], connection[2]))
+        netlist.sort(key=lambda connection: ((-self.connections_count[connection[0]] - self.connections_count[connection[1]])/2, connection[2]))
         
         # for chip in self.connections_count:
         #     if self.connections_count[chip] == 5:
@@ -185,9 +176,10 @@ class Netlist():
 
     def test(self):
         for connection in self.netlist:
-            if not connection in self.path:
-                return False
-        return True
+            try:
+                print(self.path[connection])
+            except KeyError:
+                print("Shit toch niet goed")
     
     def save_result(self):
         with open(f'results/print_{self.print_nr}/netlist_{self.netlist_nr}_{self.length}.csv', 'a', newline='') as csvfile:

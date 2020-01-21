@@ -4,7 +4,7 @@ Print het grid met alle netlist punten
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
 
-from code.classes.netlist_2 import *
+from code.classes.netlist import *
 
 class Print():
     def __init__(self, print_nr):
