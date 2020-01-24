@@ -27,6 +27,7 @@ class Netlist():
         self.random_connection = None
         self.removed_path = None
         self.hillclimb = False
+        self.tries = 1
 
         self.lowerbound = 0
         self.chip_occurences = []
@@ -206,12 +207,13 @@ class Netlist():
         # for connection in self.netlist:
         #     self.path[connection]
 
-        with open(f'results/print_{self.print_nr}/netlist_{self.netlist_nr}_{self.length}.txt', 'w', newline='') as outfile:
+        with open(f'results/print_{self.print_nr}/a_star/netlist_{self.netlist_nr}_{self.length}.txt', 'w', newline='') as outfile:
             data = {}
             data["netlist"] = self.netlist
             data["paths"] = []
             data["heurstiek"] = "a_star, cost = manhattan_distance - 2 if (0, 0, 1) - 2 * temp_z" 
             data["length"] = self.length
+            data["tries"] = self.tries
 
             for connection in self.netlist:
                 data["paths"].append((connection, self.path[connection]))
@@ -237,43 +239,6 @@ class Netlist():
             if coordinate in self.path[connection]:
                 return connection
         return None
-
-
-    def import_result(self):
-        with open(f'results/print_{print_nr}/netlist_{netlist_nr}_1.csv', newline='') as infile:
-            data = json.load(infile)
-            print(data)
-            for connection in data["paths"]:
-                self.path[connection[0]] = connection[1]
-            
-        print(self.path)
-
-    
-                
-                # keep track of amount of occurences of gate in netlist
-                # try:
-                #     self.connections_count[int(chip_a)] += 1
-                # except KeyError:
-                #     self.connections_count[int(chip_a)] = 1
-                # except ValueError:
-                #     pass
-
-                # try:
-                #     self.connections_count[int(chip_b)] += 1
-                # except KeyError:
-                #     self.connections_count[int(chip_b)] = 1
-                # except ValueError:
-                #     pass
-
-                # try:
-                #     manhattan_distance = abs(self.print.chips[int(chip_b)][0] - self.print.chips[int(chip_a)][0]) + abs(self.print.chips[int(chip_b)][1] - self.print.chips[int(chip_a)][1])
-                #     netlist.append((int(chip_a), int(chip_b), manhattan_distance))        
-                #     self.lowerbound += manhattan_distance
-                #     self.chip_occurences.append(int(chip_a))
-                #     self.chip_occurences.append(int(chip_b))
-                # except ValueError:
-                #     pass
-            # print(self.path)
 
 
         

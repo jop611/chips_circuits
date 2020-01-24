@@ -28,7 +28,7 @@ def main():
     # print(a_star(netlist))
     # print(netlist.netlist)
     while not a_star(netlist):
-        i += 1
+        netlist.tries += 1
         # print(i)
     # a_star(netlist)
     # print("lol")
@@ -38,7 +38,8 @@ def main():
     print(netlist.netlist)
     print(netlist.length)
     print("Success!!!")
-    print(f"Tries: {i}")
+    print(f"Tries: {netlist.tries}")
+    
     # print()
     # for connection in backup:
     #     try:

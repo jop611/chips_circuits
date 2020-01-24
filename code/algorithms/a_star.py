@@ -81,22 +81,7 @@ def a_star(netlist):
                     # if netlist.check_if_chip((temp_coordinate[0], temp_coordinate[1], temp_coordinate[2] - 1)):
                     #     cost += 3
                     if netlist.penalty(temp_coordinate, origin, destination):
-                        cost += 1
-
-                    # if temp_z_a == 1:
-
-                    #     print(temp_z_a, z_a)
-                    #     cost -= 1
-
-                    # if temp_z_a == 2:
-                    #     cost -= 2
-                    
-                    # if temp_z_a == 3:
-                    #     cost -= 3
-
-
-
-                  
+                        cost += 1                
 
                     if direction == (0, 0, 1):
                         cost -= 2
@@ -105,65 +90,19 @@ def a_star(netlist):
                     cost -= (temp_z_a * 2)
                     # passed_coordinates.append(temp_coordinate)
                     priorities.append((temp_coordinate, cost))
-                   
-                # elif netlist.check_if_path(temp_coordinate) and not netlist.check_if_chip(temp_coordinate) and len(priorities) == 0 and direction != (0, 0, 1) and direction != (0, 0, -1):
-                    
-                #     blocked_coordinate = temp_coordinate
-                #     print(blocked_coordinate)
 
-                # sort valid coordinates on lowest cost to destination
+            # sort valid coordinates on lowest cost to destination
             priorities.sort(key=lambda coordinate: coordinate[1])
-            
-                # save coordinate as passed coordinate
-           
 
-
-            try:
-                    # set new x-, y-, z- coordinates
-                    # try:
+            # set new x-, y-, z- coordinates 
+            try:                  
                 x_a = priorities[0][0][0]
                 y_a = priorities[0][0][1]
                 z_a = priorities.pop(0)[0][2]
 
             except IndexError:
-
                 netlist.clear()
-              
-                # print("______")
-                # print(netlist.netlist)
-             
-                # current_index = netlist.netlist.index(connection)
-                # netlist.successful_connections = current_index
-                
-                netlist.netlist.insert(0, netlist.netlist.pop(netlist.netlist.index(connection)))
-
-                # if current_index != netlist.previous_index:
-                    
-                #     netlist.netlist.insert(netlist.netlist.index(connection) - 1, netlist.netlist.pop(netlist.netlist.index(connection)))
-                #     # netlist.previous_connection = connection
-                    
-                    
-                
-                # else:
-
-                #     netlist.netlist.insert(0, netlist.netlist.pop(current_index))
-                #     netlist.netlist.insert(1, netlist.netlist.pop(netlist.netlist.index(netlist.previous_connection)))
-                    # print(netlist.netlist.index(netlist.previous_connection))
-                    # netlist.netlist.insert(netlist.netlist.index(netlist.previous_connection) - 1, netlist.netlist.pop(netlist.netlist.index(netlist.previous_connection)))
-                    # netlist.netlist.insert(netlist.netlist.index(connection) - 1, netlist.netlist.pop(netlist.netlist.index(connection))) 
-                   
-
-               
-                # netlist.previous_connection = connection
-                # # netlist.previous_connection = connection
-                # netlist.previous_index = current_index
-                # print()
-                # print(connection)
-                # print()
-                # print(netlist.netlist)
-                # print("______")
-
-                #     return False
+                netlist.netlist.insert(0, netlist.netlist.pop(netlist.netlist.index(connection)))               
                 return False
                 
         # trace route from destination to origin
@@ -171,9 +110,10 @@ def a_star(netlist):
         
         # convert path coordinates to x-, y-, z- coordinate lists for visualization via matplotlib
         netlist.path_plot[connection]  = matlib_convert(netlist.path[connection])           
-    # print("lol")
+    
+    
     print(netlist.test())
-    # print(netlist.path)
+   
     netlist.score()
     netlist.save_result()
     return True

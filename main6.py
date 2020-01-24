@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from code.classes.netlist import *
 from code.classes.print import *
-from code.algorithms.a_star_old import *
+# from code.algorithms.a_star import *
 from code.algorithms.hillclimber import *
 from visualize import *
 

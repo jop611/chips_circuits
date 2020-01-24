@@ -137,7 +137,7 @@ def hillclimber(netlist):
 
 
 def import_result(netlist, print_nr, netlist_nr):
-    with open(f'results/print_{print_nr}/netlist_{netlist_nr}_1.txt', newline='') as infile:
+    with open(f'results/print_{print_nr}/netlist_{netlist_nr}_1532.txt', newline='') as infile:
         data = json.load(infile)
         # print(data)
         for connection in data["paths"]:
