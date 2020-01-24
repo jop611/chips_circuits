@@ -4,6 +4,7 @@ wat doet deze file
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
 import copy
+import json
 
 import csv
 from code.classes.print import *
@@ -18,9 +19,14 @@ class Netlist():
         self.connections_count = {}
 
         self.successful_connections = 0
-        self.previous_index = 0
+        self.last_index = 0
         self.previous_connection = None
-
+        self.old_netlist = None
+        self.old_path = None
+        self.successful_connections = []
+        self.random_connection = None
+        self.removed_path = None
+        self.hillclimb = False
 
         self.lowerbound = 0
         self.chip_occurences = []
@@ -29,7 +35,11 @@ class Netlist():
         self.length = 0
         self.dick = {}
         self.print = Print(print_nr)
+
         self.netlist = self.load_netlist(print_nr, netlist_nr)
+        self.initial_hillclimber_limit = len(self.netlist)
+        self.hillclimber_limit = self.initial_hillclimber_limit
+        self.original_netlist = copy.deepcopy(self.netlist) 
         # print(self.lowerbound)
        
         # self.count_connections()
@@ -68,17 +78,16 @@ class Netlist():
                 except ValueError:
                     pass
 
-        highest_connection_count = {}
-        for connection in netlist:
-            if self.connections_count[connection[0]] > self.connections_count[connection[1]]:
-                highest_connection_count[connection] = self.connections_count[connection[0]]
-            else:
-                highest_connection_count[connection] = self.connections_count[connection[1]]
+        # highest_connection_count = {}
+        # for connection in netlist:
+        #     if self.connections_count[connection[0]] > self.connections_count[connection[1]]:
+        #         highest_connection_count[connection] = self.connections_count[connection[0]]
+        #     else:
+        #         highest_connection_count[connection] = self.connections_count[connection[1]]
 
         
-        netlist.sort(key=lambda connection: (highest_connection_count[connection], (self.connections_count[connection[0]] + self.connections_count[connection[1]]) / 2, -connection[2]), reverse=True)
-        
-        # (highest_connection_count[connection],
+        # netlist.sort(key=lambda connection: (highest_connection_count[connection], (self.connections_count[connection[0]] + self.connections_count[connection[1]]) / 2, -connection[2]), reverse=True)
+        netlist.sort(key=lambda connection: connection[2])
         # (self.connections_count[connection[0]] + self.connections_count[connection[1]] / 2),
         # for chip in self.connections_count:
         #     if self.connections_count[chip] == 5:
@@ -187,25 +196,40 @@ class Netlist():
 
     def test(self):
         for connection in self.netlist:
-            if not connection in self.path:
+            if not connection in self.path or self.path[connection] == []:
                 return False
         return True
     
     def save_result(self):
-        with open(f'results/print_{self.print_nr}/netlist_{self.netlist_nr}_{self.length}.csv', 'a', newline='') as csvfile:
-            writer = csv.writer(csvfile, delimiter=' ')
-            writer.writerow([self.length])
-            writer.writerow([self.netlist])
+        
+        # path = {}
+        # for connection in self.netlist:
+        #     self.path[connection]
 
-        with open(f'results/print_{self.print_nr}/netlist_{self.netlist_nr}_{self.length}.csv', 'a', newline='') as csvfile:
-            fieldnames = ['connection', 'path']
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            # writer.writerow(self.length)
-            # writer.writerow(self.netlist)
-            writer.writeheader()
+        with open(f'results/print_{self.print_nr}/netlist_{self.netlist_nr}_{self.length}.txt', 'w', newline='') as outfile:
+            data = {}
+            data["netlist"] = self.netlist
+            data["paths"] = [] 
+
             for connection in self.netlist:
-                writer.writerow({'connection': connection, 'path': self.path[connection]})
-        return None
+                data["paths"].append((connection, self.path[connection]))
+                
+            json.dump(data, outfile)
+
+        # with open(f'results/print_{self.print_nr}/netlist_{self.netlist_nr}_{self.length}_netlist.csv', 'w', newline='') as csvfile:
+        #     writer = csv.writer(csvfile, delimiter=' ')
+        #     writer.writerow([self.length])
+        #     writer.writerow([self.netlist])
+
+        # with open(f'results/print_{self.print_nr}/netlist_{self.netlist_nr}_{self.length}.csv', 'w', newline='') as csvfile:
+        #     fieldnames = ['connection', 'path']
+        #     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        #     # writer.writerow(self.length)
+        #     # writer.writerow(self.netlist)
+        #     writer.writeheader()
+        #     for connection in self.path:
+        #         writer.writerow({'connection': connection, 'path': self.path[connection]})
+        # return None
 
 
     def sortdick(self):
@@ -227,6 +251,42 @@ class Netlist():
                 return connection
         return None
 
+
+    def import_result(self):
+        with open(f'results/print_{print_nr}/netlist_{netlist_nr}_1.csv', newline='') as infile:
+            data = json.load(infile)
+            print(data)
+            for connection in data["paths"]:
+                self.path[connection[0]] = connection[1]
+            
+        print(self.path)
+
+    
+                
+                # keep track of amount of occurences of gate in netlist
+                # try:
+                #     self.connections_count[int(chip_a)] += 1
+                # except KeyError:
+                #     self.connections_count[int(chip_a)] = 1
+                # except ValueError:
+                #     pass
+
+                # try:
+                #     self.connections_count[int(chip_b)] += 1
+                # except KeyError:
+                #     self.connections_count[int(chip_b)] = 1
+                # except ValueError:
+                #     pass
+
+                # try:
+                #     manhattan_distance = abs(self.print.chips[int(chip_b)][0] - self.print.chips[int(chip_a)][0]) + abs(self.print.chips[int(chip_b)][1] - self.print.chips[int(chip_a)][1])
+                #     netlist.append((int(chip_a), int(chip_b), manhattan_distance))        
+                #     self.lowerbound += manhattan_distance
+                #     self.chip_occurences.append(int(chip_a))
+                #     self.chip_occurences.append(int(chip_b))
+                # except ValueError:
+                #     pass
+            # print(self.path)
 
 
         
