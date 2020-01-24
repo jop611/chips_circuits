@@ -211,7 +211,7 @@ class Netlist():
             data = {}
             data["netlist"] = self.netlist
             data["paths"] = []
-            data["heurstiek"] = "a_star, cost = manhattan_distance - 2 if (0, 0, 1) - 2 * temp_z" 
+            data["heuristiek"] = "a_star gesorteerd op manhattan_distance, cost = manhattan_distance - 2 if (0, 0, 1) - 2 * temp_z" 
             data["length"] = self.length
             data["tries"] = self.tries
 
