@@ -14,16 +14,12 @@ def hillclimber(netlist):
     # hardcoded list of all possible directions (north, east, south, west, up, down)
     directions = [(-1, 0, 0), (0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 1, 0), (0, 0, 1)]
     i = 0
-    # netlist.netlist = [(11, 8, 10), (8, 10, 13), (8, 14, 5), (11, 5, 4), (16, 6, 16), 
-    #                    (16, 9, 10), (16, 22, 2), (24, 5, 11), (14, 19, 3), (4, 6, 4), 
-    #                    (17, 10, 8), (10, 14, 14), (20, 6, 9), (4, 16, 20), (16, 18, 7), 
-    #                    (3, 21, 17), (21, 11, 7), (23, 14, 7), (6, 8, 1), (4, 5, 13), 
-    #                    (4, 24, 24), (4, 1, 14), (21, 20, 15), (23, 17, 5), (23, 12, 7), 
-    #                    (20, 3, 12), (24, 9, 14), (2, 1, 5), (12, 25, 7), (7, 15, 7)]
+   
+
     # iterate over all connections in netlist
     while True:
         current_length = netlist.length
-        netlist.netlist.sort(key=lambda connection: len(netlist.path[connection]), reverse=True)
+        netlist.netlist.sort(key=lambda connection: connection[2])
         for connection in netlist.netlist:        
             del netlist.path[connection]
             # coordinates of chip_a and chip_b
@@ -77,49 +73,23 @@ def hillclimber(netlist):
                         # relate new coordinate to old coordinate for tracing
                         paths[temp_coordinate] = current_coordinate
 
-                        # assign cost penalty if coordinate is close to a wrong chip
-                        # if netlist.check_if_chip((temp_coordinate[0], temp_coordinate[1], temp_coordinate[2] - 1)):
-                        #     cost += 3
-                        # if netlist.penalty(temp_coordinate, origin, destination):
-                        #     cost += 1
+                       
+                        if netlist.penalty(temp_coordinate, origin, destination):
+                            cost += 1
 
                         priorities.append((temp_coordinate, cost))
 
 
-                    # sort valid coordinates on lowest cost to destination
+                # sort valid coordinates on lowest cost to destination
                 priorities.sort(key=lambda coordinate: coordinate[1])
                 
-                    # save coordinate as passed coordinate
-                
-                # try:
-                        # set new x-, y-, z- coordinates
-                        # try:
+                # save coordinate as passed coordinate
+               
                 x_a = priorities[0][0][0]
                 y_a = priorities[0][0][1]
                 z_a = priorities.pop(0)[0][2]
 
-                # except IndexError:
-                    
-                #     # except IndexError:
-                #     #     # print("______")
-                #     #     # print(connection)
-                #     #     # print(netlist.netlist)
-                #     #     # print()
-                #     #     try:
-                #     #         netlist.dick[connection] += 1
-                #     #     except KeyError:
-                #     #         netlist.dick[connection] = 1
-                #     netlist.clear()
-                #         # netlist.netlist.insert(netlist.netlist.index(connection) - 1, netlist.netlist.pop(netlist.netlist.index(connection)))
-                #     netlist.netlist.insert(0, netlist.netlist.pop(netlist.netlist.index(connection)))
-
-
-                #     #     # netlist.netlist.remove(connection)
-                #     #     # print(netlist.netlist)
-                #     #     # print("______")
-
-                #     #     return False
-                #     return False
+               
 
             # trace route from destination to origin
             netlist.path[connection] = trace(paths, (x_a, y_a, z_a))
@@ -137,7 +107,7 @@ def hillclimber(netlist):
 
 
 def import_result(netlist, print_nr, netlist_nr):
-    with open(f'results/print_{print_nr}/netlist_{netlist_nr}_1532.txt', newline='') as infile:
+    with open(f'results/print_{print_nr}/a_star/netlist_{netlist_nr}_1474.txt', newline='') as infile:
         data = json.load(infile)
         # print(data)
         for connection in data["paths"]:
@@ -147,31 +117,3 @@ def import_result(netlist, print_nr, netlist_nr):
                 coordinate_tuple = (coordinate[0], coordinate[1], coordinate[2]) 
                 netlist.path[key].append(coordinate_tuple)
         
-    # print(netlist.path)
-
-
-            
-            # keep track of amount of occurences of gate in netlist
-            # try:
-            #     self.connections_count[int(chip_a)] += 1
-            # except KeyError:
-            #     self.connections_count[int(chip_a)] = 1
-            # except ValueError:
-            #     pass
-
-            # try:
-            #     self.connections_count[int(chip_b)] += 1
-            # except KeyError:
-            #     self.connections_count[int(chip_b)] = 1
-            # except ValueError:
-            #     pass
-
-            # try:
-            #     manhattan_distance = abs(self.print.chips[int(chip_b)][0] - self.print.chips[int(chip_a)][0]) + abs(self.print.chips[int(chip_b)][1] - self.print.chips[int(chip_a)][1])
-            #     netlist.append((int(chip_a), int(chip_b), manhattan_distance))        
-            #     self.lowerbound += manhattan_distance
-            #     self.chip_occurences.append(int(chip_a))
-            #     self.chip_occurences.append(int(chip_b))
-            # except ValueError:
-            #     pass
-        # print(self.path)

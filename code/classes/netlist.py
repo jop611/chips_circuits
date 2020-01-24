@@ -145,49 +145,10 @@ class Netlist():
         if (coordinate[0], coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0], coordinate[1], coordinate[2] - 1) != destination and (coordinate[0], coordinate[1], coordinate[2] - 1) != origin:
             return True
 
-        # if (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != origin:
-        #     return True
-        
-        # # -x direction
-        # if (coordinate[0] - 1, coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0] - 1, coordinate[1], coordinate[2] - 1) != destination and (coordinate[0] - 1, coordinate[1], coordinate[2 - 1]) != origin:
-        #     return True
-
-        # # +y direction
-        # if (coordinate[0], coordinate[1] + 1, coordinate[2] - 1) in self.print.chips_locations and (coordinate[0], coordinate[1] + 1, coordinate[2] - 1) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != origin:
-        #     return True
-
-        # # -y direction
-        # if (coordinate[0], coordinate[1] - 1, coordinate[2] - 1) in self.print.chips_locations and (coordinate[0], coordinate[1] - 1, coordinate[2] - 1) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2] - 1) != origin:
-        #     return True
-
-        # # +x, +y direction
-        # if (coordinate[0] + 1, coordinate[1] + 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1] + 1, coordinate[2]) != destination and (coordinate[0] + 1, coordinate[1] + 1, coordinate[2]) != origin:
-        #     return True
-        
-        # # +x, -y direction
-        # if (coordinate[0] + 1, coordinate[1] - 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1] - 1, coordinate[2]) != destination and (coordinate[0] + 1, coordinate[1] - 1, coordinate[2]) != origin: 
-        #     return True
-        
-        # # -x, -y direction
-        # if (coordinate[0] - 1, coordinate[1] - 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] - 1, coordinate[1] - 1, coordinate[2]) != destination and (coordinate[0] - 1, coordinate[1] - 1, coordinate[2]) != origin:
-        #     return True
-        
-        # # -x, +y direction
-        # if (coordinate[0] - 1, coordinate[1] + 1, coordinate[2]) in self.print.chips_locations and (coordinate[0] - 1, coordinate[1] + 1, coordinate[2]) != destination and (coordinate[0] - 1, coordinate[1] + 1, coordinate[2]) != origin:
-        #     return True
-
             
         return False
 
-    # def count_connections(self):
-    #     for i in range(self.print.chip_count):
-    #         # self.chip_occurences.count(i + 1)
-    #         print(f"{i + 1}: {self.chip_occurences.count(i + 1)}")
-    #         self.connections_count[i + 1] = self.chip_occurences.count(i + 1)
-            
-    #     return None
-
-    
+        
     def clear(self):
         self.path_plot.clear()
         self.path.clear()
@@ -203,11 +164,8 @@ class Netlist():
     
     def save_result(self):
         
-        # path = {}
-        # for connection in self.netlist:
-        #     self.path[connection]
 
-        with open(f'results/print_{self.print_nr}/a_star/netlist_{self.netlist_nr}_{self.length}.txt', 'w', newline='') as outfile:
+        with open(f'results/print_{self.print_nr}/hillclimb/manhattan_distance_kort_eerst_penalty/netlist_{self.netlist_nr}_{self.length}.txt', 'w', newline='') as outfile:
             data = {}
             data["netlist"] = self.netlist
             data["paths"] = []
