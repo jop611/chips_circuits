@@ -209,27 +209,14 @@ class Netlist():
         with open(f'results/print_{self.print_nr}/netlist_{self.netlist_nr}_{self.length}.txt', 'w', newline='') as outfile:
             data = {}
             data["netlist"] = self.netlist
-            data["paths"] = [] 
+            data["paths"] = []
+            data["heurstiek"] = "a_star, cost = manhattan_distance - 2 if (0, 0, 1) - 2 * temp_z" 
+            data["length"] = self.length
 
             for connection in self.netlist:
                 data["paths"].append((connection, self.path[connection]))
                 
             json.dump(data, outfile)
-
-        # with open(f'results/print_{self.print_nr}/netlist_{self.netlist_nr}_{self.length}_netlist.csv', 'w', newline='') as csvfile:
-        #     writer = csv.writer(csvfile, delimiter=' ')
-        #     writer.writerow([self.length])
-        #     writer.writerow([self.netlist])
-
-        # with open(f'results/print_{self.print_nr}/netlist_{self.netlist_nr}_{self.length}.csv', 'w', newline='') as csvfile:
-        #     fieldnames = ['connection', 'path']
-        #     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        #     # writer.writerow(self.length)
-        #     # writer.writerow(self.netlist)
-        #     writer.writeheader()
-        #     for connection in self.path:
-        #         writer.writerow({'connection': connection, 'path': self.path[connection]})
-        # return None
 
 
     def sortdick(self):

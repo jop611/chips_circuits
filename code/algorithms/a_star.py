@@ -129,8 +129,8 @@ def a_star(netlist):
 
                 netlist.clear()
               
-                print("______")
-                print(netlist.netlist)
+                # print("______")
+                # print(netlist.netlist)
              
                 # current_index = netlist.netlist.index(connection)
                 # netlist.successful_connections = current_index
@@ -157,11 +157,11 @@ def a_star(netlist):
                 # netlist.previous_connection = connection
                 # # netlist.previous_connection = connection
                 # netlist.previous_index = current_index
-                print()
-                print(connection)
-                print()
-                print(netlist.netlist)
-                print("______")
+                # print()
+                # print(connection)
+                # print()
+                # print(netlist.netlist)
+                # print("______")
 
                 #     return False
                 return False
