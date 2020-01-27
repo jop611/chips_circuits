@@ -1,47 +1,32 @@
-import csv
-import matplotlib.pyplot as plt
-import numpy as np
-from code.classes.netlist import *
-from code.classes.print import *
-from code.algorithms.breadth import *
-
-from code.algorithms.breadth import *
-from visualize import *
+from code.classes.netlist import Netlist
+from code.algorithms.breadth import bfs
+from code.algorithms.a_star import a_star
+from code.algorithms.hillclimber import hillclimber
+from visualize import plot
 
 
 def main():
-    print_nr = int(input("Print_nr: "))
-    netlist_nr = int(input("Netlist_nr: "))
-    print()
-    print()
 
+    algorithm = input(f"\nChoose algorithm to perform\n"
+                       "***************************\n\n"
+                       "Options:\n"
+                       "A: A* algorithm\n"
+                       "B: Breadth-first search algorithm\n"
+                       "C: Hillclimber algorithm on previously found solution\n").upper()
+
+    print_nr = int(input("Choose a print to use: "))
+    netlist_nr = int(input("Choose a netlist to solve (0-6): "))
+   
     netlist = Netlist(print_nr, netlist_nr)
-    # backup = copy.deepcopy(netlist.netlist)
-    i = 0
-    # while not (a_star(netlist)):
-    #     i += 1
-        # print("Fail")
-    # print(a_star(netlist))
-    # print(netlist.netlist)
-    while not bfs(netlist):
-        i += 1
-        print(i)
     
-    print(netlist.netlist)
-    print()
-    netlist.score()
-    print(netlist.length)
-    print("Success!!!")
-    print(f"Tries: {i}")
-    print()
-    # for connection in backup:
-    #     try:
-    #         pass
-    #         # print(netlist.path[connection])
-    #     except:
-    #         KeyError
-    print()
-    # print(len(netlist.path))
+    
+    if algorithm == "A":
+        a_star(netlist)
+    elif algorithm == "B":
+        bfs(netlist)
+    elif algorithm == "C":
+        hillclimber(netlist)
+
     plot(netlist.print.x_list, netlist.print.y_list, netlist.print.z_list, netlist.print.boundaries, netlist.path_plot, netlist.length)
 
 if __name__ == "__main__":
