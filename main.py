@@ -21,7 +21,8 @@ def main():
     
     
     if algorithm == "A":
-        a_star(netlist)
+        while not a_star(netlist):
+            pass
     elif algorithm == "B":
         bfs(netlist)
     elif algorithm == "C":
