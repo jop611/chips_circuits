@@ -23,7 +23,7 @@ def hillclimber(netlist):
     # ...
     while True:
         current_length = netlist.length
-        shuffle(netlist.netlist)
+        netlist.netlist.sort(key=lambda connection: len(netlist.path[connection]))
 
         # iterate over all connections in netlist
         for connection in netlist.netlist:

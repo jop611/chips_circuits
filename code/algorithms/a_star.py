@@ -17,7 +17,7 @@ def a_star(netlist):
 
     # hardcoded list of all possible directions (north, east, south, west, up, down)
     directions = [(-1, 0, 0), (0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 1, 0), (0, 0, 1)]
-
+    
     # iterate over all connections in netlist
     for connection in netlist.netlist:
 
