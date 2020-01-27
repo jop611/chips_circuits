@@ -1,3 +1,11 @@
+"""
+a_star.py
+
+A*-algorithm for pathfinding between coordinates for a random netlist.
+Returns Boolean function.
+
+(C) 2020 Teamname, Amsterdam, The Netherlands
+"""
 from code.classes.netlist import *
 from code.classes.print import *
 from code.algorithms.helpers import * 
@@ -32,10 +40,7 @@ def a_star(netlist):
         y_b = netlist.print.chips[chip_b][1]
         z_b = netlist.print.chips[chip_b][2]
 
-        diff_x = x_b - x_a
-        diff_y = y_b - y_a
-        diff_diff = diff_x - diff_y
-
+        # setting the boundaries of the grid
         min_x = netlist.print.boundaries[0][0]
         max_x = netlist.print.boundaries[1][0]
         min_y = netlist.print.boundaries[0][1] 
@@ -43,17 +48,15 @@ def a_star(netlist):
         min_z = netlist.print.boundaries[0][2]
         max_z = netlist.print.boundaries[1][2]
 
+        # defining the origin & destination coordinates
         origin = (x_a, y_a, z_a)
         current_coordinate = origin
         destination = (x_b, y_b, z_b)
 
-        passed_coordinates = []
         priorities = []
         paths = {}
-        blocked = {}
-        blocked_coordinate = (0, 0, 0)
-        blocked[connection] = False
 
+        # perform pathfinding until the destination coordinate is reached
         while x_a != x_b or y_a != y_b or z_a != z_b:
             current_coordinate = (x_a, y_a, z_a)
 
@@ -63,6 +66,7 @@ def a_star(netlist):
                 temp_y_a = y_a + direction[1]
                 temp_z_a = z_a + direction[2]
 
+                # coordinate of a possible direction
                 temp_coordinate = (temp_x_a, temp_y_a, temp_z_a)
 
                 # assign cost to coordinate based on manhattan distance to destination
@@ -79,87 +83,44 @@ def a_star(netlist):
                     # relate new coordinate to old coordinate for tracing
                     paths[temp_coordinate] = current_coordinate
 
-                    # assign cost if neighbouring                     
+                    # increasing cost if coordinate is close to a wrong chip so that it avoids it                  
                     if netlist.penalty(temp_coordinate, origin, destination):
                         cost += 1
 
-                    # if direction == (0, 0, 1):
-                    #     cost -= 2
-                    # if manhattan_distance < 10 and temp_z_a <= 3:
-                    #     cost -= (temp_z_a * 4)
-                    # elif manhattan_distance < 10:
-                    #     cost -= (temp_z_a * 2)
-                    # elif manhattan_distance > 10 and temp_z_a > 3:
-                    #     cost -= (temp_z_a * 4)
-                    # elif manhattan_distance > 10:
-                    #     cost -= (temp_z_a * 2)
-
-                    # if blocked[connection] != True:
+                    # reducing cost if an upward movement is possible so that it is forced upwards
                     if direction == (0, 0, 1):
                         cost -= 2
-                    #     if manhattan_distance < 10 and temp_z_a <= 3:
-                    #         cost -= (temp_z_a * 3)
-                    #     elif manhattan_distance < 10:
-                    #         cost -= (temp_z_a * 1)
-                    #     elif manhattan_distance > 10 and temp_z_a > 3:
-                    #         cost -= (temp_z_a * 3)
-                    #     elif manhattan_distance > 10:
-                    #         cost -= (temp_z_a * 1)
                     cost -= (temp_z_a * 2)
-                        
-                    # if temp_x_a == 0 or temp_y_a == 0:
-                    #     cost -= 1
-
-
-
-
-                        
-
-
-
-                    
-                    # cost -= (temp_z_a * 2)
-                    # passed_coordinates.append(temp_coordinate)
+                
+                    # add temporary to list of valid coordinates
                     priorities.append((temp_coordinate, cost))
-                   
-                # elif netlist.check_if_path(temp_coordinate) and not netlist.check_if_chip(temp_coordinate) and len(priorities) == 0 and direction != (0, 0, 1) and direction != (0, 0, -1):
-                    
-                #     blocked_coordinate = temp_coordinate
-                #     print(blocked_coordinate)
 
-                # sort valid coordinates on lowest cost to destination
+            # sort valid coordinates on lowest cost to destination
             priorities.sort(key=lambda coordinate: coordinate[1])
             
-                # save coordinate as passed coordinate
-           
-
-
             try:
-                    # set new x-, y-, z- coordinates
-                    # try:
+                # set new x-, y-, z- coordinates if there are valid coordinates to go to
                 x_a = priorities[0][0][0]
                 y_a = priorities[0][0][1]
                 z_a = priorities.pop(0)[0][2]
-
             except IndexError:
-
-                # netlist.clear()
-                # print("______")
-                # print(netlist.netlist)   
-                # netlist.netlist.insert(0, netlist.netlist.pop(netlist.netlist.index(connection)))
+                # if there is no way to move it clears the netlist
                 netlist.clear()
-                #     return False
                 return False
                 
         # trace route from destination to origin
         netlist.path[connection] = trace(paths, (x_a, y_a, z_a))
         
         # convert path coordinates to x-, y-, z- coordinate lists for visualization via matplotlib
-        netlist.path_plot[connection]  = matlib_convert(netlist.path[connection])          
-    # print("lol")
+        netlist.path_plot[connection]  = matlib_convert(netlist.path[connection])   
+
+    # extra check if all connections are made  
     if netlist.test() == False:
         return False
-    # print(netlist.path)
+
+    # count amount of wires used
     netlist.score()
+
+    # save solution in json format
     netlist.save_result()
     return True

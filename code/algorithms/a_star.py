@@ -1,3 +1,12 @@
+"""
+a_star.py
+
+A*-algorithm for pathfinding between coordinates for given netlist.
+Returns Boolean function.
+
+(C) 2020 Teamname, Amsterdam, The Netherlands
+"""
+
 from code.classes.netlist import *
 from code.algorithms.helpers import * 
 
@@ -5,13 +14,6 @@ from code.algorithms.helpers import *
 def a_star(netlist):
     """
     A*-algorithm for pathfinding between coordinates
-
-    Input: 
-    Netlist object to perform A*-algorithm on
-
-    Returns: 
-    Boolean; True if solution is found
-             False otherwise
     """
 
     # hardcoded list of all possible directions (north, east, south, west, up, down)
@@ -33,7 +35,7 @@ def a_star(netlist):
         y_b = netlist.print.chips[chip_b][1]
         z_b = netlist.print.chips[chip_b][2]
 
-
+        # setting the boundaries of the grid
         min_x = netlist.print.boundaries[0][0]
         max_x = netlist.print.boundaries[1][0]
         min_y = netlist.print.boundaries[0][1] 
@@ -41,14 +43,13 @@ def a_star(netlist):
         min_z = netlist.print.boundaries[0][2]
         max_z = netlist.print.boundaries[1][2]
 
+        # defining the origin & destination coordinates
         origin = (x_a, y_a, z_a)
         current_coordinate = origin
         destination = (x_b, y_b, z_b)
 
-        passed_coordinates = []
         priorities = []
         paths = {}
-        blocked_coordinate = (0, 0, 0)
      
         # perform pathfinding until the destination coordinate is reached
         while x_a != x_b or y_a != y_b or z_a != z_b:
@@ -62,12 +63,12 @@ def a_star(netlist):
                 temp_y_a = y_a + direction[1]
                 temp_z_a = z_a + direction[2]
 
+                # coordinate of a possible direction
                 temp_coordinate = (temp_x_a, temp_y_a, temp_z_a)
 
                 # calculate manhattan distance to destination
                 cost = abs(x_b - temp_x_a) + abs(y_b - temp_y_a) + abs(z_b - temp_z_a)
-                
-                
+                        
                 # verify that temporary coordinates are valid coordinates
                 if ((not netlist.check_if_path(temp_coordinate) or netlist.check_if_chip(temp_coordinate))
                      and not temp_coordinate in paths and not (temp_coordinate, cost) in priorities
@@ -79,14 +80,13 @@ def a_star(netlist):
                     # relate new coordinate to old coordinate for tracing
                     paths[temp_coordinate] = current_coordinate
 
-                    # assign cost penalty if coordinate is close to a wrong chip
+                    # increasing cost if coordinate is close to a wrong chip so that it avoids it
                     if netlist.penalty(temp_coordinate, origin, destination):
                         cost += 1                
 
-                    # adjust cost for heuristic values
+                    # reducing cost if an upward movement is possible so that it is forced upwards
                     if direction == (0, 0, 1):
                         cost -= 2
-
                     cost -= temp_z_a * 2
 
                     # add temporary to list of valid coordinates
