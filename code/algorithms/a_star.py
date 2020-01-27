@@ -7,9 +7,8 @@ Returns Boolean function.
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
 
-from code.classes.netlist import *
-from code.algorithms.helpers import * 
-
+from code.classes.netlist import Netlist
+from code.algorithms.helpers import *
 
 def a_star(netlist):
     """
