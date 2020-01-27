@@ -1,4 +1,6 @@
 """
+helpers.py
+
 Traces path of a connection coordinate by coordinate
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
@@ -9,7 +11,7 @@ def trace(paths, destination):
 
     coordinates = destination
     path = [coordinates]
-    
+
     # iterate over coordinates
     while coordinates in paths:
         coordinates = paths[coordinates]
@@ -19,7 +21,7 @@ def trace(paths, destination):
 
 def matlib_convert(path):
     """Convert (x, y, z) coordinates to x-, y-, z- coordinate lists for visualisation via matplotlib"""
-    
+
     x_list = []
     y_list = []
     z_list = []
@@ -29,5 +31,3 @@ def matlib_convert(path):
         y_list.append(coordinate[1])
         z_list.append(coordinate[2])
     return (x_list, y_list, z_list)
-
-

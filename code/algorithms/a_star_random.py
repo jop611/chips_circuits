@@ -1,8 +1,11 @@
 """
-A*-algorithm for pathfinding between coordinates
-"""
+a_star.py
 
-import copy
+A*-algorithm for pathfinding between coordinates for a random netlist.
+Returns Boolean function.
+
+(C) 2020 Teamname, Amsterdam, The Netherlands
+"""
 from code.classes.netlist import *
 from code.classes.print import *
 from code.algorithms.random import *
@@ -35,15 +38,23 @@ def a_star(netlist):
         y_b = netlist.print.chips[chip_b][1]
         z_b = netlist.print.chips[chip_b][2]
 
+        # setting the boundaries of the grid
+        min_x = netlist.print.boundaries[0][0]
+        max_x = netlist.print.boundaries[1][0]
+        min_y = netlist.print.boundaries[0][1] 
+        max_y = netlist.print.boundaries[1][1]
+        min_z = netlist.print.boundaries[0][2]
+        max_z = netlist.print.boundaries[1][2]
 
+        # defining the origin & destination coordinates
         origin = (x_a, y_a, z_a)
         current_coordinate = origin
         destination = (x_b, y_b, z_b)
 
-        passed_coordinates = []
         priorities = []
         paths = {}
 
+        # perform pathfinding until the destination coordinate is reached
         while x_a != x_b or y_a != y_b or z_a != z_b:
             current_coordinate = (x_a, y_a, z_a)
 
@@ -54,6 +65,7 @@ def a_star(netlist):
                 temp_y_a = y_a + direction[1]
                 temp_z_a = z_a + direction[2]
 
+                # coordinate of a possible direction
                 temp_coordinate = (temp_x_a, temp_y_a, temp_z_a)
 
                 # assign cost to coordinate based on manhattan distance to destination
@@ -70,35 +82,44 @@ def a_star(netlist):
                     # relate new coordinate to old coordinate for tracing
                     paths[temp_coordinate] = current_coordinate
 
-                    # assign cost penalty if coordinate is close to a wrong chip
-
-                    if netlist.check_if_chip((temp_coordinate[0], temp_coordinate[1], temp_coordinate[2] - 1)):
-                        cost += 10
-                    if netlist.penalty(temp_coordinate, destination):
-                        # print(True)
+                    # increasing cost if coordinate is close to a wrong chip so that it avoids it                  
+                    if netlist.penalty(temp_coordinate, origin, destination):
                         cost += 1
 
+                    # reducing cost if an upward movement is possible so that it is forced upwards
+                    if direction == (0, 0, 1):
+                        cost -= 2
+                    cost -= (temp_z_a * 2)
+                
+                    # add temporary to list of valid coordinates
                     priorities.append((temp_coordinate, cost))
 
             # sort valid coordinates on lowest cost to destination
             priorities.sort(key=lambda coordinate: coordinate[1])
-           
-            # save coordinate as passed coordinate
-            passed_coordinates.append(current_coordinate)
-
-            # set new x-, y-, z- coordinates
+            
             try:
+                # set new x-, y-, z- coordinates if there are valid coordinates to go to
                 x_a = priorities[0][0][0]
                 y_a = priorities[0][0][1]
                 z_a = priorities.pop(0)[0][2]
             except IndexError:
-                # print(connection)
+                # if there is no way to move it clears the netlist
+                netlist.clear()
                 return False
         
         # trace route from destination to origin
         netlist.path[connection] = trace(paths, (x_a, y_a, z_a))
         
         # convert path coordinates to x-, y-, z- coordinate lists for visualization via matplotlib
-        netlist.path_plot[connection]  = matlib_convert(netlist.path[connection])           
-    
+        netlist.path_plot[connection]  = matlib_convert(netlist.path[connection])   
+
+    # extra check if all connections are made  
+    if netlist.test() == False:
+        return False
+
+    # count amount of wires used
+    netlist.score()
+
+    # save solution in json format
+    netlist.save_result()
     return True
