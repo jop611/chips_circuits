@@ -10,7 +10,6 @@ Returns Boolean function.
 from code.classes.netlist import *
 from code.algorithms.helpers import *
 
-
 def a_star(netlist):
     """
     A*-algorithm for pathfinding between coordinates
