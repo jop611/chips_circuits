@@ -32,7 +32,7 @@ def a_star(netlist):
         y_b = netlist.print.chips[chip_b][1]
         z_b = netlist.print.chips[chip_b][2]
 
-        # define boundaries of grid
+        # setting boundaries of grid
         min_x = netlist.print.boundaries[0][0]
         max_x = netlist.print.boundaries[1][0]
         min_y = netlist.print.boundaries[0][1]
