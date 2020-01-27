@@ -35,7 +35,7 @@ class Netlist():
             reader = csv.reader(csvfile)
             for chip_a, chip_b in reader:
 
-                # keep track of amount of occurences of gate in netlist
+                # keep track of amount of occurences of a gate in netlist
                 try:
                     self.connections_count[int(chip_a)] += 1
                 except KeyError:
@@ -57,18 +57,21 @@ class Netlist():
                     self.chip_occurences.append(int(chip_b))
                 except ValueError:
                     pass
-
-        # Sort list with average connections per connected gates
+        
         highest_connection_count = {}
+
+        # assign highest amount of occurrences of either gate to a connection
         for connection in netlist:
             if self.connections_count[connection[0]] > self.connections_count[connection[1]]:
                 highest_connection_count[connection] = self.connections_count[connection[0]]
             else:
                 highest_connection_count[connection] = self.connections_count[connection[1]]
 
+        # Sort list on highest amount of connections of either gates
         netlist.sort(key=lambda connection: (highest_connection_count[connection], (self.connections_count[connection[0]] + self.connections_count[connection[1]]) / 2, -connection[2]), reverse=True)
 
         return netlist
+
 
     def check_if_path(self, coordinate):
         """Check if path lies in existing path"""
@@ -102,19 +105,25 @@ class Netlist():
         x = coordinate[0]
         y = coordinate[1]
         z = coordinate[2]
+
+        north = (x, y + 1, z)
+        east = (x + 1, y, z)
+        south = (x, y - 1, z)
+        west = (x - 1, y, z)
+        down = (x, y, z - 1)
         
-        if (((coordinate[0] + 1, coordinate[1], coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2]) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2]) != origin)
-           or ((coordinate[0] - 1, coordinate[1], coordinate[2]) in self.print.chips_locations and (coordinate[0] - 1, coordinate[1], coordinate[2]) != destination and (coordinate[0] - 1, coordinate[1], coordinate[2]) != origin)
-           or ((coordinate[0], coordinate[1] + 1, coordinate[2]) in self.print.chips_locations and (coordinate[0], coordinate[1] + 1, coordinate[2]) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2]) != origin)
-           or ((coordinate[0], coordinate[1] - 1, coordinate[2]) in self.print.chips_locations and (coordinate[0], coordinate[1] - 1, coordinate[2]) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2]) != origin)
-           or ((coordinate[0], coordinate[1], coordinate[2] - 1) in self.print.chips_locations and (coordinate[0], coordinate[1], coordinate[2] - 1) != destination and (coordinate[0], coordinate[1], coordinate[2] - 1) != origin)):
+        if ((east in self.print.chips_locations and east != destination and east != origin)
+           or (west in self.print.chips_locations and west != destination and west != origin)
+           or (north in self.print.chips_locations and north != destination and north != origin)
+           or (south in self.print.chips_locations and south != destination and south != origin)
+           or (down in self.print.chips_locations and down != destination and down != origin)):
             return True   
 
         return False
 
 
     def clear(self):
-        """Clear plot path after use"""
+        """Clear path after use"""
 
         self.path_plot.clear()
         self.path.clear()
@@ -122,11 +131,11 @@ class Netlist():
         return None
 
 
-    def solved(self):
-        for connection in self.netlist:
-            if not connection in self.path:
-                return False
-        return True
+    # def solved(self):
+    #     for connection in self.netlist:
+    #         if not connection in self.path:
+    #             return False
+    #     return True
 
     def save_result(self):
         """Save connections of succesfull netlist into csv file"""
