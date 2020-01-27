@@ -5,7 +5,7 @@ Traces path of a connection coordinate by coordinate
 """
 
 def trace(paths, destination):
-    """ Returns a list of all passed coorinates """
+    """Traces path from destination to origin"""
 
     coordinates = destination
     path = [coordinates]
@@ -18,7 +18,7 @@ def trace(paths, destination):
     return path
 
 def matlib_convert(path):
-    """ Make coordinate list for matlib """
+    """Convert (x, y, z) coordinates to x-, y-, z- coordinate lists for visualisation via matplotlib"""
     
     x_list = []
     y_list = []

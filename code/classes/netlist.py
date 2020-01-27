@@ -41,11 +41,7 @@ class Netlist():
         self.initial_hillclimber_limit = len(self.netlist)
         self.hillclimber_limit = self.initial_hillclimber_limit
         self.original_netlist = copy.deepcopy(self.netlist) 
-        # print(self.lowerbound)
-       
-        # self.count_connections()
-
-        print()
+        print(self.lowerbound)
 
     def load_netlist(self, print_nr, netlist_nr):
         """ Load selected netlist """
@@ -79,28 +75,20 @@ class Netlist():
                 except ValueError:
                     pass
 
-        # highest_connection_count = {}
-        # for connection in netlist:
-        #     if self.connections_count[connection[0]] > self.connections_count[connection[1]]:
-        #         highest_connection_count[connection] = self.connections_count[connection[0]]
-        #     else:
-        #         highest_connection_count[connection] = self.connections_count[connection[1]]
-
+        highest_connection_count = {}
+        for connection in netlist:
+            if self.connections_count[connection[0]] > self.connections_count[connection[1]]:
+                highest_connection_count[connection] = self.connections_count[connection[0]]
+            else:
+                highest_connection_count[connection] = self.connections_count[connection[1]]
         
-        # netlist.sort(key=lambda connection: (highest_connection_count[connection], (self.connections_count[connection[0]] + self.connections_count[connection[1]]) / 2, -connection[2]), reverse=True)
-        netlist.sort(key=lambda connection: connection[2])
-        # (self.connections_count[connection[0]] + self.connections_count[connection[1]] / 2),
-        # for chip in self.connections_count:
-        #     if self.connections_count[chip] == 5:
-        #         for connection in netlist:
-        #             if connection[0] == chip or connection[1] == chip:
-        #                 netlist.remove(connection)                  
-        #                 netlist.insert(0, connection)
-        # print
+        netlist.sort(key=lambda connection: (highest_connection_count[connection], (self.connections_count[connection[0]] + self.connections_count[connection[1]]) / 2, -connection[2]), reverse=True)
+        # netlist.sort(key=lambda connection: connection[2])
+        
         return netlist
 
     def check_if_path(self, coordinate):
-        """ Check if path has been used """
+        """Check if path lies in existing path"""
 
         return coordinate in [path for connection in self.path.values() for path in connection]
 
@@ -117,7 +105,7 @@ class Netlist():
         return coordinate == destination
 
     def score(self):
-        """ Amount of connections made """
+        """Count amount of connections made"""
 
         self.length = 0
         for connection in self.path:
@@ -125,6 +113,16 @@ class Netlist():
 
 
     def penalty(self, coordinate, origin, destination):
+        """
+        Determine if a coordinate is adjacent to a gate that it does not originate from, and is not its destination
+        
+        Input: 
+        Coordinate to verify, origin coordinate, destination coordinate; (x, y, z) tuples
+
+        Return:
+         
+        """
+
         # +x direction
         if (coordinate[0] + 1, coordinate[1], coordinate[2]) in self.print.chips_locations and (coordinate[0] + 1, coordinate[1], coordinate[2]) != destination and (coordinate[0] + 1, coordinate[1], coordinate[2]) != origin:
             return True
@@ -165,11 +163,11 @@ class Netlist():
     def save_result(self):
         
 
-        with open(f'results/print_{self.print_nr}/hillclimb/manhattan_distance_kort_eerst_penalty/netlist_{self.netlist_nr}_{self.length}.txt', 'w', newline='') as outfile:
+        with open(f'results/print_{self.print_nr}/a_star/netlist_{self.netlist_nr}_{self.length}.txt', 'w', newline='') as outfile:
             data = {}
             data["netlist"] = self.netlist
             data["paths"] = []
-            data["heuristiek"] = "a_star gesorteerd op manhattan_distance, cost = manhattan_distance - 2 if (0, 0, 1) - 2 * temp_z" 
+            data["heuristiek"] = "gesorteerd op hoogst aantal connecties dat een van beide gates heeft in de netlist, daarna op gemiddeld aantal connecties in netlist, daarna op manhattan_distance, cost = manhattan_distance - 2 if (0, 0, 1) - 2 * temp_z + 1 if penalty()" 
             data["length"] = self.length
             data["tries"] = self.tries
 

@@ -1,6 +1,7 @@
 from code.classes.netlist import *
 from code.classes.print import *
 from code.algorithms.helpers import * 
+from random import shuffle
 
 
 def hillclimber(netlist):
@@ -13,15 +14,17 @@ def hillclimber(netlist):
     
     # hardcoded list of all possible directions (north, east, south, west, up, down)
     directions = [(-1, 0, 0), (0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 1, 0), (0, 0, 1)]
-    i = 0
-   
+       
 
     # iterate over all connections in netlist
     while True:
         current_length = netlist.length
-        netlist.netlist.sort(key=lambda connection: connection[2])
-        for connection in netlist.netlist:        
+        shuffle(netlist.netlist)
+        for connection in netlist.netlist:
+
+
             del netlist.path[connection]
+
             # coordinates of chip_a and chip_b
             chip_a = connection[0]
             chip_b = connection[1]
@@ -100,14 +103,16 @@ def hillclimber(netlist):
         netlist.test()
 
         netlist.score()
-        netlist.save_result()
+        
         if netlist.length == current_length:
+            netlist.save_result()
             break
         # return False
 
 
 def import_result(netlist, print_nr, netlist_nr):
-    with open(f'results/print_{print_nr}/a_star/netlist_{netlist_nr}_1474.txt', newline='') as infile:
+    length = input("Lengte van oplossing om te hillclimben: ")
+    with open(f'results/print_{print_nr}/a_star/netlist_{netlist_nr}_{length}.txt', newline='') as infile:
         data = json.load(infile)
         # print(data)
         for connection in data["paths"]:
