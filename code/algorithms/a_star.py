@@ -8,7 +8,7 @@ Returns Boolean function.
 """
 
 from code.classes.netlist import *
-from code.algorithms.helpers import * 
+from code.algorithms.helpers import *
 
 
 def a_star(netlist):
@@ -50,7 +50,7 @@ def a_star(netlist):
 
         priorities = []
         paths = {}
-     
+
         # perform pathfinding until the destination coordinate is reached
         while x_a != x_b or y_a != y_b or z_a != z_b:
             current_coordinate = (x_a, y_a, z_a)
@@ -68,7 +68,7 @@ def a_star(netlist):
 
                 # calculate manhattan distance to destination
                 cost = abs(x_b - temp_x_a) + abs(y_b - temp_y_a) + abs(z_b - temp_z_a)
-                        
+
                 # verify that temporary coordinates are valid coordinates
                 if ((not netlist.check_if_path(temp_coordinate) or netlist.check_if_chip(temp_coordinate))
                      and not temp_coordinate in paths and not (temp_coordinate, cost) in priorities
@@ -113,12 +113,9 @@ def a_star(netlist):
         # convert path coordinates to x-, y-, z- coordinate lists for visualization via matplotlib
         netlist.path_plot[connection]  = matlib_convert(netlist.path[connection])
 
-    # verify that all connections have been made
-    if netlist.test():
+    # count amount of wires used
+    netlist.score()
 
-        # count amount of wires used
-        netlist.score()
-
-        # save solution in json format
-        netlist.save_result()
-        return True
+    # save solution in json format
+    netlist.save_result()
+    return True

@@ -144,14 +144,6 @@ class Netlist():
         self.length = 0
         return None
 
-    def test(self):
-        """Check if all connections are made"""
-
-        for connection in self.netlist:
-            if not connection in self.path or self.path[connection] == []:
-                return False
-        return True
-
     def save_result(self):
         """Save connections of succesfull netlist into csv file"""
 
