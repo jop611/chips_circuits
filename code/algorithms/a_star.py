@@ -118,3 +118,4 @@ def a_star(netlist):
     # save solution in json format
     netlist.save_result()
     return True
+
