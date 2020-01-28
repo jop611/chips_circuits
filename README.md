@@ -1,4 +1,3 @@
-![Example of the connections that have to be made between gates with minimum cost.](pics/voorbeeld.png)
 # Chips & Circuits
 Chips are made out of silicone plates. You can find gates on these plates which interact with each other by connecting them. By connecting them with each other, electricity can flow between the gates & a circuit is created. You can connect gates in various ways, whereby a netlist shows which gates should be connected to each other. However it doesn't show how the gates should be connected to each other.
 
@@ -12,7 +11,7 @@ The example below shows how the connections A-B, A-C,C-E, D-B, D-E are being mad
 ![Example of the connections that have to be made between gates with minimum cost.](pics/voorbeeld.png)
 The example below shows how the connections A-B, A-C,C-E, D-B, D-E are being made inefficiently.
 
- **Constraints**
+ ### Constraints 
 
  - Wires can not run along the same grid segment
  - Wires can not cross at an intersection
