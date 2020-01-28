@@ -1,8 +1,7 @@
 """
 print.py
 
-Print the grid with all netlist points.
-Input is the chosen netlist.
+Import locations of gates on a grid.
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
@@ -11,6 +10,7 @@ import csv
 
 
 class Print():
+
     def __init__(self, print_nr):
         self.max_x = 0
         self.max_y = 0

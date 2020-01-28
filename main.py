@@ -4,7 +4,6 @@ from code.algorithms.a_star import A_Star
 from code.algorithms.hillclimber import HillClimber
 
 
-
 def main():
     algorithm = input(f"\nChoose algorithm to perform\n"
                        "***************************\n\n"
@@ -12,6 +11,7 @@ def main():
                        "A: A* algorithm\n"
                        "B: Breadth-first search algorithm\n"
                        "C: Hillclimber algorithm on previously found solution\n").upper()
+                       
                        
     # choice of print can be either 1 or 2
     print_nr = input(f"\nChoose a print to use (1/2): ")
@@ -37,9 +37,10 @@ def main():
 
     # hillclimber algorithm can be used on obtained results. it requires the correct length of the result to be improved as input.
     # options: 409 for netlist 0, 709 for netlist 1, 1047 for netlist 2, 
-    #          1219 for netlist 3, 1406 for netlist 4, 1610 for netlist 5.
+    #          1219 for netlist 3, 1460 for netlist 4, 1610 for netlist 5.
     elif algorithm == "C":
-        hillclimber = HillClimber(print_nr, netlist_nr)
+        length = input("Length of solution to perform hillclimber on: ")
+        hillclimber = HillClimber(print_nr, netlist_nr, length)
         hillclimber.run()
 
 

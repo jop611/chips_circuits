@@ -1,7 +1,7 @@
 """
 a_star.py
 
-A*-algorithm for pathfinding between gates for a given netlist.
+A*-algorithm for pathfinding between gates for a given netlist with use of inadmissable heuristics.
 
 
 (C) 2020 Teamnaam, Amsterdam, The Netherlands
@@ -11,6 +11,7 @@ from code.classes.netlist import Netlist
 from code.helpers.helpers import *
 
 class A_Star(object):
+    """A_Star is the parent class of multiple algorithms. Heuristics are used to find a valid solution for our case.""" 
 
     # hardcoded list of all possible directions (north, east, south, west, up, down)
     directions = [(-1, 0, 0), (0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 1, 0), (0, 0, 1)]
@@ -75,7 +76,7 @@ class A_Star(object):
     
     def calculate_costs(self, coordinates, direction):
         """
-        Calculates the cost to move to certain coordinates.
+        Calculates the cost to move to certain coordinates. Inadmissable heuristics are choses on purpose.
 
         Input:
         Coordinate, direction; tuples of x-, y-, z-coordinates.
@@ -83,6 +84,7 @@ class A_Star(object):
         Return:
         cost; integer.
         """
+
         x = coordinates[0]
         y = coordinates[1]
         z = coordinates[2]
@@ -113,7 +115,6 @@ class A_Star(object):
         Return:
         None.
         """
-
 
         self.gate_a = connection[0]
         self.gate_b = connection[1]
@@ -188,12 +189,7 @@ class A_Star(object):
 
 
     def connected(self):
-        """
-        Checks if two gates are connected.
-
-        Return:
-        Boolean.
-        """
+        """Checks if two gates are connected. Returns boolean."""
 
         if self.x_a == self.x_b and self.y_a == self.y_b and self.z_a == self.z_b:
             return True
@@ -201,12 +197,7 @@ class A_Star(object):
         
 
     def solved(self):
-        """
-        Checks if a netlist has been solved, i.e. if all connections have been made.
-
-        Return:
-        Boolean.
-        """
+        """Checks if a netlist has been solved, i.e. if all connections have been made. Returns boolean."""
 
         for connection in self.netlist.netlist:
             if not connection in self.netlist.path:
@@ -215,12 +206,7 @@ class A_Star(object):
 
     
     def run(self):
-        """
-        Runs A*-algorithm for pathfinding between gates.
-
-        Return:
-        None.
-        """
+        """Runs A*-algorithm for pathfinding between gates. Returns None"""
 
         # iterate until a solution is found, possibly infinitely long for the most complex netlist.
         while not self.solved():
@@ -228,7 +214,7 @@ class A_Star(object):
                 self.connect(connection)
         
 
-        self.netlist.score()
+        self.netlist.count_wires()
         self.netlist.save_result()
 
         answer = input("Do you wish to plot a 3D image? Y/N: ").upper()

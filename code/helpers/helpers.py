@@ -6,7 +6,6 @@ Traces path of a connection and appends coordinates to list used for visualisati
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
 
-
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import numpy as np
@@ -56,7 +55,7 @@ def matlib_convert(path):
     return (x_list, y_list, z_list)
 
 
-def plot(x_gates, y_gates, z_gates, boundaries, paths, score):
+def plot(x_gates, y_gates, z_gates, boundaries, paths, count_wires):
     """
     Plot gates and connections in a 3D grid.
     
@@ -66,7 +65,7 @@ def plot(x_gates, y_gates, z_gates, boundaries, paths, score):
     z_gates; list of z-coordinates of all gates.
     boundaries; tuple of x-, y-, z-coordinates.
     paths; dictionary containing all paths between gates.
-    score; integer.
+    count_wires; integer.
     
     Return:
     None
@@ -77,7 +76,7 @@ def plot(x_gates, y_gates, z_gates, boundaries, paths, score):
     ax = fig.add_subplot(111, projection='3d')
     plt.xticks(np.arange(0, boundaries[1][0] + 1, 1))
     plt.yticks(np.arange(0, boundaries[1][1] + 1, 1))
-    plt.title(f"Total wire length: {score}")
+    plt.title(f"Total wire length: {count_wires}")
     ax.set_xlim3d(0, boundaries[1][0], 1)
     ax.set_ylim3d(0, boundaries[1][1], 1)
     ax.set_zlim3d(0, 7)
@@ -99,4 +98,3 @@ def plot(x_gates, y_gates, z_gates, boundaries, paths, score):
     ax.set_zlabel('Z axis')
 
     plt.show()
-

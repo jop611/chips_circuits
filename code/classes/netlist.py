@@ -95,7 +95,7 @@ class Netlist():
         return coordinate in self.print.gates.values()
 
 
-    def score(self):
+    def count_wires(self):
         """Counts connections between coordinates are made, i.e. how many wires are used. Returns self.lenght; integer."""
 
         self.length = 0
@@ -145,6 +145,7 @@ class Netlist():
     def save_result(self):
         """Save connections of succesful netlist in json format into .txt file. Returns None."""
 
+        # open .csv file
         with open(f'results/netlist_{self.netlist_nr}_{self.length}.txt', 'w', newline='') as outfile:
             data = {}
             data["netlist"] = self.netlist
@@ -152,6 +153,7 @@ class Netlist():
             data["length"] = self.length
             data["tries"] = self.tries
 
+            # iterate over all connections
             for connection in self.netlist:
                 data["paths"].append((connection, self.path[connection]))
 

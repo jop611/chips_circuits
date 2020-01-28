@@ -1,10 +1,10 @@
 """
 breadthfirst.py
 
-Breadth First algorithm for pathfinding between gates for a given netlist.
+Breadth First algorithm for pathfinding between gates for a given netlist without heuristics.
 
 
-(C) 2020 Teamname, Amsterdam, The Netherlands
+(C) 2020 Teamnaam, Amsterdam, The Netherlands
 """
 
 from code.algorithms.a_star import A_Star
@@ -85,7 +85,7 @@ class BreadthFirst(A_Star):
                 self.connect(connection)
                 
         # count amount of wires used
-        self.netlist.score()
+        self.netlist.count_wires()
 
         # save solution
         self.netlist.save_result()

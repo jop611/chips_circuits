@@ -1,9 +1,9 @@
 """
 hillclimber.py
 
-Recreate connections made with A* algorithm with Hillclimber algorithm & opening A* to adjust connections
+Remove and reconnect gates with the use of adjusted admissable heuristics in order to optimize the solutions to their local minima.
 
-(C) 2020 Teamname, Amsterdam, The Netherlands
+(C) 2020 Teamnaam, Amsterdam, The Netherlands
 """
 
 from code.algorithms.a_star import A_Star
@@ -12,75 +12,98 @@ import json
 
 
 class HillClimber(A_Star):
+    """
+    HillClimber is used optimize the existing paths between gates using admissable heuristics.
 
+    Many functions are equal to those of A_Star, therefore A_Star is chosen as the parent class.
+    """ 
 
-    def __init__(self, print_nr, netlist_nr):
+    def __init__(self, print_nr, netlist_nr, hillclimb_length):
         super(HillClimber, self).__init__(print_nr, netlist_nr)
+        self.hillclimb_length = hillclimb_length
         self.previous_length = 0
+        self.diff = None
 
 
-    def calculate_costs(self, temp_coordinate, direction):
+    def calculate_costs(self, coordinate, direction):
+        """
+        Calculates the cost to move to certain coordinates. 
+        Differs from the A_Star calulate_costs() function, as admissable heuristics are choses. 
 
-        temp_x_a = temp_coordinate[0]
-        temp_y_a = temp_coordinate[1]
-        temp_z_a = temp_coordinate[2]
-
-        cost = abs(self.x_b - temp_x_a) + abs(self.y_b - temp_y_a) + abs(self.z_b - temp_z_a)
+        Input:
+        Coordinate, direction; tuples of x-, y-, z-coordinates.
         
-        # increasing cost if coordinate is close to a wrong gate so that it avoids it
-        if self.netlist.penalty(temp_coordinate, self.origin, self.destination):
+        Return:
+        cost; integer.
+        """
+
+        x = coordinate[0]
+        y = coordinate[1]
+        z = coordinate[2]
+
+        # manhattan distance to destination coordinates
+        cost = abs(self.x_b - x) + abs(self.y_b - y) + abs(self.z_b - z)
+        
+        # increasing cost if coordinate is close to make it less favourable
+        if self.netlist.penalty(coordinate, self.origin, self.destination):
             cost += 1
 
         return cost
 
 
+    def import_result(self, print_nr, netlist_nr, length):
+        """
+        Imports obtained result in json format from .txt file.
 
-    def import_result(self, print_nr, netlist_nr):
-        """Open A* solution file needed to be shortened"""
+        Input:
+        print_nr, netlist_nr, length; strings of numeric values.
 
-        length = input("Lengte van oplossing om te hillclimben: ")
+        Return:
+        None
+        """
+
+        # open .txt file
         with open(f'results/netlist_{netlist_nr}_{length}.txt', newline='') as infile:
             data = json.load(infile)
 
-            # ..
+            # convert connections in list format to tuple format
             for connection in data["paths"]:
                 key = (connection[0][0], connection[0][1], connection[0][2])
                 self.netlist.path[key] = []
 
-                # ..
+                # convert all coordinates in paths in list format to tuple format
                 for coordinate in connection[1]:
                     coordinate_tuple = (coordinate[0], coordinate[1], coordinate[2])
                     self.netlist.path[key].append(coordinate_tuple)
 
-        self.netlist.score()
+        # count amount of wires
+        self.netlist.count_wires()
 
 
-    def optimized(self):
+    def is_optimized(self):
+        """Checks if a solution has reached its local minimum. Returns a boolean.""" 
 
-        if self.previous_length > self.netlist.length or self.previous_length == 0:
-            return False
-        return True
+        if self.previous_length == self.netlist.length:
+            return True
+        return False
 
         
-        
-
     def run(self):
-        
-        self.import_result(self.netlist.print_nr, self.netlist.netlist_nr)
+        """Runs a hillclimber algorithm, by using an A*-algorithm with admissable heuristics to find a local minimum. Returns None"""
 
-        while not self.optimized():
-            
-            for connection in self.netlist.netlist:
-                
+        # import result
+        self.import_result(self.netlist.print_nr, self.netlist.netlist_nr, self.hillclimb_length)
+
+        # keep iterating while the total wirelength is lower than before
+        while not self.is_optimized():            
+            for connection in self.netlist.netlist:                
                 del self.netlist.path[connection]
-
                 self.connect(connection)
-                
-            self.previous_length = self.netlist.length
-            # print(self.netlist.length)
-            self.netlist.score()
 
-        # save solution in json format
+            # update wirelengths
+            self.previous_length = self.netlist.length           
+            self.netlist.count_wires()
+
         self.netlist.save_result()
 
         answer = input("Do you wish to plot a 3D image? Y/N: ").upper()
