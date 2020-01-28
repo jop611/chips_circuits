@@ -32,5 +32,3 @@ def matlib_convert(path):
         y_list.append(coordinate[1])
         z_list.append(coordinate[2])
     return (x_list, y_list, z_list)
-
-
