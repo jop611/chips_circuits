@@ -4,7 +4,7 @@ Chips are made out of silicone plates. You can find gates on these plates which 
 The assignment is to connect gates with a fixed arrangement with each other according to a given netlist.
 Connections can only follow the grid. This includes the edge of the grid. 1 step on the grid is one unit length.
 The grid exists of 7 layers. This means that connections can also go up and down. This costs 1 unit length per level.
-All connections of each netlist need to be made at minimum cost.
+All connections of each netlist needs to be made at minimum cost.
 
 The example below shows how the connections A-B, A-C,C-E, D-B, D-E are being made with as little steps as possible.
 ![Example of the connections that have to be made between gates with minimum cost.](pics/voorbeeld.png)
