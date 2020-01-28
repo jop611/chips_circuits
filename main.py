@@ -1,3 +1,13 @@
+"""
+main.py
+
+Interface for running the program
+
+Loading the netlist, initializing lists and dictionaries and some helper functions
+
+(C) 2020 Teamname, Amsterdam, The Netherlands
+"""
+
 from code.classes.netlist import Netlist
 from code.algorithms.breadth import bfs
 from code.algorithms.a_star import a_star
@@ -16,10 +26,10 @@ def main():
 
     print_nr = int(input("Choose a print to use: "))
     netlist_nr = int(input("Choose a netlist to solve (0-6): "))
-   
+
     netlist = Netlist(print_nr, netlist_nr)
-    
-    
+
+
     if algorithm == "A":
         while not a_star(netlist):
             pass
@@ -33,6 +43,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-    
-    
