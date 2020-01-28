@@ -1,34 +1,33 @@
 # Chips & Circuits
-Teamname
+Finding the shortest wiring pattern for a chip with fixed gates on a seven layered grid. The connections that have to be made between gates are given in netlists. The wires may not touch each other.
 
-Jop, Navisa & Robel
+## Prerequisites
+This code has been written in [Python3.7.5](https://www.python.org/downloads/). In requirements.txt are all the required packages to successfully use the code.
 
-## De opdracht
-Verbind gates met een vaste locatie met elkaar volgens de netlists. De positie van de gates en welke connecties gemaakt moeten worden zijn van tevoren verkregen.
+## Structure
+All Python scripts are in the folder code. In the map gates&netlists are the chips with their netlists and gates position. The map results has all the given results saved
 
-Connecties kunnen alleen het rooster volgen. Dit bevat ook de rand van het rooster. 1 stap kost 1 eenheid.
+## Algorithms
+For this problem 3 algorithms were used:
+* A*
+* Hillclimber
+* Breadth First
 
-Het rooster bestaat uit 7 lagen. Dit betekent dat de connecties ook omhoog en omlaag kunnen. Dit kost 1 eenheid per level.
+Hillclimber improves the solution found by A*.
 
-Alle connecties tussen de gates moeten gelegd worden met een zo laag mogelijke kostenplaatje.
+## Testing
+To use this code you first run:
+```bash
+python main.py
+```
+After choosing your preferred algorithm and netlist the code will search for a solution. If the choice was A* you can run the code again and chose Hillclimber as algorithm for a better solution.
 
-In het plaatje is te zien in 2D hoe de connecties A-B, A-C, C-E, D-B, D-E gemaakt worden met zo weinig mogelijk stappen.
+At the end of each search a window will pop up with a visualisation of the found solution.
 
-![Voorbeeld van de connectie die gemaakt moet worden tussen de gates met een zo kort mogelijke afstand.](pics/voorbeeld.png)
+## Authors
+Robel Haile, Jop Meijer & Navisa Rajabali
 
-## Beperkingen:
-- De lijnen mogen niet langs dezelfde route gaan
-- De lijnen mogen elkaar niet kruisen
-- De lijn mag niet buiten de grid komen, 17x12 voor print 1 en 17x16 voor print 2
-
-## Werkwijze:
-Voor deze opdracht is er gebruikt gemaakt van het A* algoritme. (uitleg algoritme)
-
-## Aanpassingen:
-Tijdens het generenen van de connecties werden niet alle connecties gemaakt. Dit kwam omdat eerdere gemaakte connecties sommige gates afsluitte waardoor er geen connecties gemaakt konden worden met die gates. Dit is te zien in de afbeelding hieronder met de desbetreffende gate omcirkelt in rood.
-
-![Gate die geen connecties meer kan maken omdat het afgesloten is door andere gelegde connecties.](pics/gatecirkel.jpg)
-
-Om dit probleem op te lossen, zijn de volgende aanpassingen gedaan.
+## Acknowledgments
+Minor programming of the UvA
 
 © 2019 All Rights Reserved

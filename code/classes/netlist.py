@@ -1,7 +1,7 @@
 """
 netlist.py
 
-Check during the making of connections for
+Loading the netlist, initializing lists and dictionaries and some helper functions
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
@@ -25,7 +25,7 @@ class Netlist():
         self.length = 0
         self.print = Print(print_nr)
         self.netlist = self.load_netlist(print_nr, netlist_nr)
-   
+
 
     def load_netlist(self, print_nr, netlist_nr):
         """Load selected netlist"""
@@ -57,7 +57,7 @@ class Netlist():
                     self.gate_occurences.append(int(gate_b))
                 except ValueError:
                     pass
-        
+
         highest_connection_count = {}
 
         # assign highest amount of occurrences of either gate to a connection
@@ -111,19 +111,19 @@ class Netlist():
         south = (x, y - 1, z)
         west = (x - 1, y, z)
         down = (x, y, z - 1)
-        
+
         if ((east in self.print.gates_locations and east != destination and east != origin)
            or (west in self.print.gates_locations and west != destination and west != origin)
            or (north in self.print.gates_locations and north != destination and north != origin)
            or (south in self.print.gates_locations and south != destination and south != origin)
            or (down in self.print.gates_locations and down != destination and down != origin)):
-            return True   
+            return True
 
         return False
 
 
     def clear(self):
-        """Clear path after use"""
+        """Clear all paths when connection making gets stuck"""
 
         self.path_plot.clear()
         self.path.clear()
@@ -152,11 +152,3 @@ class Netlist():
                 data["paths"].append((connection, self.path[connection]))
 
             json.dump(data, outfile)
-
-    def blocking_path(self, coordinate):
-        """ """
-
-        for connection in self.path:
-            if coordinate in self.path[connection]:
-                return connection
-        return None
