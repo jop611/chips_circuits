@@ -9,7 +9,7 @@ All connections of each netlist needs to be made at minimum cost.
 The example below shows how the connections A-B, A-C,C-E, D-B, D-E are being made with as little steps as possible.
 ![Example of the connections that have to be made between gates with minimum cost.](pics/voorbeeld.png)
 
- ### Constraints 
+ ### Constraints
 
  - Wires can not run along the same grid segment
  - Wires can not cross at an intersection
@@ -33,8 +33,7 @@ The pics folder contains all the pictures used in the README.md file
 
 The gates&netlists folder contains 2 folders: **chip_1** & **chip_2**. Each of these folders contain all the netlists and gate positions of the corresponding chip. Chip 1, netlist 0 is our own made netlist for the testing of Breadth First.
 
-The results folder is divided into 2 folders: **print_1** & **print_2**. Each of these folders is divided into **a_star** &  **hillclimb**.
-These folders contain the results obtained from running the program depending on which netlist you choose.
+The results folder contains the results obtained from running the program depending on which netlist you choose.
 
 For more information on these files, click on them.
 
