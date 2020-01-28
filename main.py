@@ -1,7 +1,7 @@
 """
 main.py
 
-Interface for running the program
+Interface for running the program.
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """

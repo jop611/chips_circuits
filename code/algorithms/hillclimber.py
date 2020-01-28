@@ -1,7 +1,8 @@
 """
 hillclimber.py
 
-Recreate connections made with A* algorithm with Hillclimber algorithm and opening A* to adjust connections
+Recreate connections made with A* algorithm with Hillclimber algorithm and opening A* to adjust connections.
+Input is the chosen netlist.
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """

@@ -1,7 +1,7 @@
 """
 netlist.py
 
-Loading the netlist, initializing lists and dictionaries and some helper functions
+Loading the netlist, initializing lists and dictionaries and some helper functions.
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """

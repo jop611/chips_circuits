@@ -1,7 +1,8 @@
 """
 print.py
 
-Print the grid with all netlist points
+Print the grid with all netlist points.
+Input is the chosen netlist.
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
