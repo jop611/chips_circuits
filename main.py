@@ -16,7 +16,6 @@ from visualize import plot
 
 
 def main():
-
     algorithm = input(f"\nChoose algorithm to perform\n"
                        "***************************\n\n"
                        "Options:\n"
