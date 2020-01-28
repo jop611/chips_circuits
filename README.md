@@ -15,7 +15,7 @@ For this problem 3 algorithms were used:
 
 Hillclimber improves the solution found by A*.
 
-**heuristic**
+**Heuristic**
 
 The netlists are sorted by Manhattan distance
 
