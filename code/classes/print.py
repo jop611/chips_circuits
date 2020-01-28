@@ -24,6 +24,7 @@ class Print():
 
     def load_print(self, print_nr):
         """Load gates in grid"""
+        
         gates = {}
 
         # open csv file with gate coordinates
