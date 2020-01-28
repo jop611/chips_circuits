@@ -1,5 +1,5 @@
 # Chips & Circuits
-Finding the shortest wiring pattern for a chip with fixed gates on a seven layered grid. The connections that have to be made between gates are given in netlists. The wires may not touch each other.
+Finding the shortest wiring pattern for a chip with fixed gates on a seven layered grid. The connections that have to be made between gates are given in netlists. The wires may not touch each other and have to follow the grid.
 
 ## Prerequisites
 This code has been written in [Python3.7.5](https://www.python.org/downloads/). In requirements.txt are all the required packages to successfully use the code.
