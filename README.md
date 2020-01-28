@@ -20,7 +20,26 @@ pip install -r requirements.txt
 ```
 
 ## Structure
+In the code folder you can find the algorithms and classes folders.
+You can find several pathfinding algorithms in the algorithms folder.
+The **breadth first** algorithm tries to find a path by checking every possible option beginning from the node.
+The **a-star** algorithm finds his way through the grid by looking at his neighbours. Some neighbours are more favorable moving to then others & the algorithm is designed to move to the most favourable neighbour.
+The **hillclimber** algorithm is designed to act after a netlist is successfully connected. The **hillclimber** algorithm breaks every connection step by step & tries to make a shorter connection without the use of some heuristics used in the **a-star** algorithm.
 
+You can find the print & netlist file in the classes folder that are partly operated in the beginning.
+The **netlist** file loads the netlist that is selected with the manhattan distance per connection & the **print** file loads the gates with their corresponding coordinates.
+The **netlist** file also contains some helping functions that are used in the 3 algorithms.
+
+The pics folder contains all the pictures used in the README.md file
+
+The gates&netlists folder contains 2 folders: **chip_1** & **chip_2**. Each of these folders contain all the netlists and gate positions of the corresponding chip. Chip 1, netlist 0 is our own made netlist for the testing of Breadth First.
+
+The results folder is divided into 2 folders: **print_1** & **print_2**. Each of these folders is divided into **a_star** &  **hillclimb**.
+These folders contain the results obtained from running the program depending on which netlist you choose. An example of a result can be: netlist_1_719.
+The first number after the first underscore represent the netlist that was used. The second number after the second underscore represent the score.
+If you click on these result files you can see the order in which the netlist was solved. After that you can see the path of each connection and at the end you can see the heuristics that were used to obtain the result.
+
+For more information on these files, click on them.
 
 ## Algorithms
 For this problem 3 algorithms were used:
@@ -28,7 +47,7 @@ For this problem 3 algorithms were used:
 * Hillclimber
 * Breadth First
 
-Due to the A*-algorithm pushing the connections up to make all connections, the wire length becomes unnecessery long by not using the lower levels. The Hillclimber algorithm improves the solution found by A* by recreating the made connections on the lower levels.
+Due to the A*-algorithm pushing the connections up to make all connections, the wire length becomes unnecessary long by not using the lower levels. The Hillclimber algorithm improves the solution found by A* by recreating the made connections on the lower levels.
 
 **Heuristic**
 
@@ -39,7 +58,7 @@ To use this code you first run:
 ```bash
 python main.py
 ```
-After choosing your preferred algorithm. You can chose A for A*, B for Breadth first. Further you will be asked to chose between chip 1 and 2 and then for a netlist. 1-3 for chip 1 and 4-6 for chip 2. The code will now look for a solution for the chosen netlist.
+After choosing your preferred algorithm. You can chose A for A*, B for Breadth first. Further you will be asked to chose between chip 1 and 2 and then for a netlist. 0-3 for chip 1 and 4-6 for chip 2. The code will now look for a solution for the chosen netlist.
 
 Option C for Hillclimber can be chosen after first running either A* or Breadth First first. The Hillclimber algorithm will try to lower the connection cost of the already made netlist by A* or Breadth First if possible.
 
