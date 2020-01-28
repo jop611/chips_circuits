@@ -21,7 +21,7 @@ def hillclimber(netlist):
     directions = [(-1, 0, 0), (0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 1, 0), (0, 0, 1)]
 
     # ...
-    while netlist.length < current_length:
+    while True:
         current_length = netlist.length
         netlist.netlist.sort(key=lambda connection: len(netlist.path[connection]))
 
@@ -51,7 +51,6 @@ def hillclimber(netlist):
             passed_coordinates = []
             priorities = []
             paths = {}
-            blocking_paths = []
 
             while x_a != x_b or y_a != y_b or z_a != z_b:
                 current_coordinate = (x_a, y_a, z_a)
@@ -67,8 +66,6 @@ def hillclimber(netlist):
 
                     # assign cost to coordinate based on manhattan distance to destination
                     cost = abs(x_b - temp_x_a) + abs(y_b - temp_y_a) + abs(z_b - temp_z_a)
-
-                    # print(netlist.check_if_path(temp_coordinate))
 
                     # verify that temporary coordinates are valid coordinates
                     if ((not netlist.check_if_path(temp_coordinate) or netlist.check_if_gate(temp_coordinate))
