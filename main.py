@@ -3,8 +3,6 @@ main.py
 
 Interface for running the program
 
-Loading the netlist, initializing lists and dictionaries and some helper functions
-
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
 
