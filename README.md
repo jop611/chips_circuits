@@ -11,6 +11,8 @@ The example below shows how the connections A-B, A-C,C-E, D-B, D-E are being mad
 ![Example of the connections that have to be made between gates with minimum cost.](pics/voorbeeld.png)
 
 The example below shows how the connections A-B, A-C,C-E, D-B, D-E are being made inefficiently.
+![Example of the connections that have to be made between gates inefficiently.](pics/voorbeeld2.png)
+
 
  ### Constraints 
 
