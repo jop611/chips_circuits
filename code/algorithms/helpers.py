@@ -1,7 +1,7 @@
 """
 helpers.py
 
-Traces path of a connection coordinate by coordinate
+Traces path of a connection & appends coordinates to list used for visualisation
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
@@ -13,7 +13,6 @@ def trace(paths, destination):
     coordinates = destination
     path = [coordinates]
 
-    # iterate over coordinates
     while coordinates in paths:
         coordinates = paths[coordinates]
         path.append(coordinates)

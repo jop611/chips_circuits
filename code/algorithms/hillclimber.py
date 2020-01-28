@@ -1,7 +1,7 @@
 """
 hillclimber.py
 
-Recreate connections made with A* algoritme with Hillclimber algorithm
+Recreate connections made with A* algorithm with Hillclimber algorithm & opening A* to adjust connections
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
