@@ -1,11 +1,16 @@
+![Example of the connections that have to be made between gates with minimum cost.](pics/voorbeeld.png)
 # Chips & Circuits
-The assignment is to connect gates with a fixed arrangement with each other according to a given netlist.
+Chips are made out of silicone plates. You can find gates on these plates which interact with each other by connecting them. By connecting them with each other, electricity can flow between the gates & a circuit is created. You can connect gates in various ways, whereby a netlist shows which gates should be connected to each other. However it doesn't show how the gates should be connected to each other.
+
+The assignment is to connect gates with a fixed arrangement with each other according to a given netlist. Because you have a lot of possibilities to make these connections, we need to find the minimum total length of each netlist.
+The advantage of this is that you minimalize the costs & that you speed up the circuits.
 Connections can only follow the grid. This includes the edge of the grid. 1 step on the grid is one unit length.
 The grid exists of 7 layers. This means that connections can also go up and down. This costs 1 unit length per level.
-All connections of each netlist need to be made at minimum cost.
+Wires can also not cross at an intersection & they can not run along the same grid segment. All these constraints are shown below.
 
 The example below shows how the connections A-B, A-C,C-E, D-B, D-E are being made with as little steps as possible.
 ![Example of the connections that have to be made between gates with minimum cost.](pics/voorbeeld.png)
+The example below shows how the connections A-B, A-C,C-E, D-B, D-E are being made inefficiently.
 
  **Constraints**
 
