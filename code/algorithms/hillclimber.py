@@ -27,20 +27,21 @@ def hillclimber(netlist):
 
         # iterate over all connections in netlist
         for connection in netlist.netlist:
+
             del netlist.path[connection]
 
-            # coordinates of chip_a and chip_b
-            chip_a = connection[0]
-            chip_b = connection[1]
+            # coordinates of gate_a and gate_b
+            gate_a = connection[0]
+            gate_b = connection[1]
 
-            # chip coordinates split into x-, y-, z- coordinates
-            x_a = netlist.print.chips[chip_a][0]
-            y_a = netlist.print.chips[chip_a][1]
-            z_a = netlist.print.chips[chip_a][2]
+            # gate coordinates split into x-, y-, z- coordinates
+            x_a = netlist.print.gates[gate_a][0]
+            y_a = netlist.print.gates[gate_a][1]
+            z_a = netlist.print.gates[gate_a][2]
 
-            x_b = netlist.print.chips[chip_b][0]
-            y_b = netlist.print.chips[chip_b][1]
-            z_b = netlist.print.chips[chip_b][2]
+            x_b = netlist.print.gates[gate_b][0]
+            y_b = netlist.print.gates[gate_b][1]
+            z_b = netlist.print.gates[gate_b][2]
 
 
             origin = (x_a, y_a, z_a)
@@ -50,7 +51,6 @@ def hillclimber(netlist):
             passed_coordinates = []
             priorities = []
             paths = {}
-            blocking_paths = []
 
             while x_a != x_b or y_a != y_b or z_a != z_b:
                 current_coordinate = (x_a, y_a, z_a)
@@ -67,12 +67,10 @@ def hillclimber(netlist):
                     # assign cost to coordinate based on manhattan distance to destination
                     cost = abs(x_b - temp_x_a) + abs(y_b - temp_y_a) + abs(z_b - temp_z_a)
 
-                    # print(netlist.check_if_path(temp_coordinate))
-
                     # verify that temporary coordinates are valid coordinates
-                    if ((not netlist.check_if_path(temp_coordinate) or netlist.check_if_chip(temp_coordinate))
+                    if ((not netlist.check_if_path(temp_coordinate) or netlist.check_if_gate(temp_coordinate))
                         and not temp_coordinate in paths and not (temp_coordinate, cost) in priorities
-                        and ((netlist.check_if_chip(temp_coordinate) and temp_coordinate == destination) or not netlist.check_if_chip(temp_coordinate))
+                        and ((netlist.check_if_gate(temp_coordinate) and temp_coordinate == destination) or not netlist.check_if_gate(temp_coordinate))
                         and (not temp_x_a < netlist.print.boundaries[0][0] and not temp_x_a > netlist.print.boundaries[1][0]
                             and not temp_y_a < netlist.print.boundaries[0][1] and not temp_y_a > netlist.print.boundaries[1][1]
                             and not temp_z_a < netlist.print.boundaries[0][2] and not temp_z_a > netlist.print.boundaries[1][2])):
