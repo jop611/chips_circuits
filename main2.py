@@ -1,7 +1,7 @@
 from code.classes.netlist import Netlist
 from code.algorithms.breadth import bfs
-from code.algorithms.a_star import a_star
-from code.algorithms.hillclimber import hillclimber
+from code.algorithms.a_star_copy import A_star
+from code.algorithms.hillclimber_copy import Hillclimber
 from visualize import plot
 
 
@@ -21,18 +21,17 @@ def main():
     
     
     if algorithm == "A":
-        for i in range(100):
-            a_star(netlist)
-            netlist.clear()
+        a_star = A_star(print_nr, netlist_nr)
+        a_star.run()
             
     elif algorithm == "B":
-        for i in range(100):
-            bfs(netlist)
-            netlist.clear()
+        bfs(netlist)
+        netlist.clear()
     elif algorithm == "C":
-        hillclimber(netlist)
+        hillclimber = Hillclimber(print_nr, netlist_nr)
+        hillclimber.run()
 
-    plot(netlist.print.x_list, netlist.print.y_list, netlist.print.z_list, netlist.print.boundaries, netlist.path_plot, netlist.length)
+    plot(a_star.netlist.print.x_list, a_star.netlist.print.y_list, a_star.netlist.print.z_list, a_star.netlist.print.boundaries, a_star.netlist.path_plot, a_star.netlist.length)
 
 if __name__ == "__main__":
     main()
