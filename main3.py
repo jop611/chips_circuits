@@ -1,13 +1,19 @@
-from code.classes.netlist import Netlist
-from code.algorithms.breadthfirst import BreadthFirst
-from code.algorithms.a_star import A_star
-from code.algorithms.hillclimber import Hillclimber
-from code.algorithms.breadthfirst import BreadthFirst
+"""
+main.py
 
+Interface for running the program.
+
+(C) 2020 Teamname, Amsterdam, The Netherlands
+"""
+
+from code.classes.netlist import Netlist
+from code.algorithms.breadth import bfs
+from code.algorithms.a_star import a_star
+from code.algorithms.hillclimber import hillclimber
+from visualize import plot
 
 
 def main():
-
     algorithm = input(f"\nChoose algorithm to perform\n"
                        "***************************\n\n"
                        "Options:\n"
@@ -17,25 +23,19 @@ def main():
 
     print_nr = int(input("Choose a print to use (1/2): "))
     netlist_nr = int(input("Choose a netlist to solve (0-6): "))
-   
+
     netlist = Netlist(print_nr, netlist_nr)
-    
-    
+
     if algorithm == "A":
-        a_star = A_star(print_nr, netlist_nr)
-        a_star.run()
-    
+        while not a_star(netlist):
+            pass
     elif algorithm == "B":
-        bfs = BreadthFirst(print_nr, netlist_nr)
-        bfs.run()
-
+        while not bfs(netlist):
+            pass
     elif algorithm == "C":
-        hillclimber = Hillclimber(print_nr, netlist_nr)
-        hillclimber.run()
+        hillclimber(netlist)
 
+    plot(netlist.print.x_list, netlist.print.y_list, netlist.print.z_list, netlist.print.boundaries, netlist.path_plot, netlist.length)
 
 if __name__ == "__main__":
     main()
-
-    
-    

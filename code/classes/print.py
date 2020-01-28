@@ -7,7 +7,7 @@ Input is the chosen netlist.
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
 
-from code.classes.netlist import *
+import csv
 
 
 class Print():

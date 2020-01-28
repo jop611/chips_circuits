@@ -6,10 +6,9 @@ Loading the netlist, initializing lists and dictionaries and some helper functio
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
 
-import copy
 import json
 import csv
-from code.classes.print import *
+from code.classes.print import Print
 
 
 class Netlist():
@@ -131,21 +130,13 @@ class Netlist():
         return None
 
 
-    # def solved(self):
-    #     for connection in self.netlist:
-    #         if not connection in self.path:
-    #             return False
-    #     return True
-
-
     def save_result(self):
-        """Save connections of succesfull netlist into csv file"""
+        """Save connections of succesful netlist into csv file"""
 
-        with open(f'results/print_{self.print_nr}/a_star/netlist_{self.netlist_nr}_{self.length}.txt', 'w', newline='') as outfile:
+        with open(f'results/netlist_{self.netlist_nr}_{self.length}.txt', 'w', newline='') as outfile:
             data = {}
             data["netlist"] = self.netlist
             data["paths"] = []
-            data["heuristiek"] = "gesorteerd op hoogst aantal connecties dat een van beide gates heeft in de netlist, daarna op gemiddeld aantal connecties in netlist, daarna op manhattan_distance, cost = manhattan_distance - 2 if (0, 0, 1) - 2 * temp_z + 1 if penalty()"
             data["length"] = self.length
             data["tries"] = self.tries
 
