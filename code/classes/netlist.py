@@ -1,7 +1,7 @@
 """
 netlist.py
 
-Loading the netlist, initializing lists and dictionaries and some helper functions
+Loading the netlist, initializing lists and dictionaries and some helper functions.
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
@@ -78,7 +78,7 @@ class Netlist():
 
         return coordinate in [path for connection in self.path.values() for path in connection]
 
-    
+
     def check_if_gate(self, coordinate):
         """Check if input coordinate is a location of a gate"""
 
@@ -136,6 +136,7 @@ class Netlist():
     #         if not connection in self.path:
     #             return False
     #     return True
+
 
     def save_result(self):
         """Save connections of succesfull netlist into csv file"""

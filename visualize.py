@@ -1,5 +1,7 @@
 """
-Make visual grid with gates and connections
+visualize.py
+
+Make visual grid with gates and connections.
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
@@ -23,7 +25,7 @@ def plot(x_gates, y_gates, z_gates, boundaries, paths, score):
     ax.set_ylim3d(0, boundaries[1][1], 1)
     ax.set_zlim3d(0, 7)
 
-    
+
     for m, zlow, zhigh in [('s', 0, 7)]:
         x = x_gates
         y = y_gates
