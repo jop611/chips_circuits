@@ -1,16 +1,16 @@
 """
 a_star.py
 
-A*-algorithm for pathfinding between coordinates for given netlist.
-Returns Boolean function.
+A*-algorithm for pathfinding between gates for a given netlist.
 
-(C) 2020 Teamname, Amsterdam, The Netherlands
+
+(C) 2020 Teamnaam, Amsterdam, The Netherlands
 """
 
 from code.classes.netlist import Netlist
 from code.helpers.helpers import *
 
-class A_star(object):
+class A_Star(object):
 
     # hardcoded list of all possible directions (north, east, south, west, up, down)
     directions = [(-1, 0, 0), (0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 1, 0), (0, 0, 1)]
@@ -43,49 +43,82 @@ class A_star(object):
         self.destination = None
 
 
-    def validate_move(self, temp_coordinate):
+    def valid_move(self, coordinate):
+        """
+        Checks if a coordinate satisfies all constraints.
 
-        temp_x_a = temp_coordinate[0]
-        temp_y_a = temp_coordinate[1]
-        temp_z_a = temp_coordinate[2]
+        Constraints:
+        - The coordinates can not be part of an existing path, 
+          unless it is the destination coordinate, which could be in multiple paths.
+        - The coordinates can not have been checked for validity before.
+        - The coordinates can not be a gate that is not the destination gate.
+        - The coordinates can not lie outside the boundaries.
 
-        # verify that temporary coordinates are valid coordinates
-        if ((not self.netlist.check_if_path(temp_coordinate) or self.netlist.check_if_gate(temp_coordinate)) and not temp_coordinate in self.paths
-            and ((self.netlist.check_if_gate(temp_coordinate) and temp_coordinate == self.destination) or not self.netlist.check_if_gate(temp_coordinate))
-            and (not temp_x_a < self.min_x and not temp_x_a > self.max_x
-                and not temp_y_a < self.min_y and not temp_y_a > self.max_y
-                and not temp_z_a < self.min_z and not temp_z_a > self.max_z)):
+        Input:
+        Coordinate; tuple.
+
+        Return: 
+        Boolean.
+        """
+
+        x = coordinate[0]
+        y = coordinate[1]
+        z = coordinate[2]
+        
+        if ((not self.netlist.check_if_path(coordinate) or self.netlist.check_if_gate(coordinate)) and not coordinate in self.paths
+            and ((self.netlist.check_if_gate(coordinate) and coordinate == self.destination) or not self.netlist.check_if_gate(coordinate))
+            and (self.min_x <= x <= self.max_x) and (self.min_y <= y <= self.max_y) and (self.min_z <= z <= self.max_z)):
 
             return True
         return False
 
     
-    def calculate_costs(self, temp_coordinate, direction):
+    def calculate_costs(self, coordinates, direction):
+        """
+        Calculates the cost to move to certain coordinates.
 
-        temp_x_a = temp_coordinate[0]
-        temp_y_a = temp_coordinate[1]
-        temp_z_a = temp_coordinate[2]
-
-        cost = abs(self.x_b - temp_x_a) + abs(self.y_b - temp_y_a) + abs(self.z_b - temp_z_a)
+        Input:
+        Coordinate, direction; tuples of x-, y-, z-coordinates.
         
-        # increasing cost if coordinate is close to a wrong gate so that it avoids it
-        if self.netlist.penalty(temp_coordinate, self.origin, self.destination):
+        Return:
+        cost; integer.
+        """
+        x = coordinates[0]
+        y = coordinates[1]
+        z = coordinates[2]
+
+        # manhattan distance to destination coordinates
+        cost = abs(self.x_b - x) + abs(self.y_b - y) + abs(self.z_b - z)
+        
+        # increasing cost if coordinate is close to make it less favourable
+        if self.netlist.penalty(coordinates, self.origin, self.destination):
             cost += 1
 
+        # decreasing cost to make upward movement more favourable
         if direction == (0, 0, 1):
             cost -= 2
-        cost -= temp_z_a * 2
+
+        cost -= z * 2
 
         return cost
 
 
     def get_coordinates(self, connection):
+        """
+        Saves coordinates as new variables for readability purposes.
+        
+        Input:
+        Connection; tuple of two gates to be connected.
+
+        Return:
+        None.
+        """
 
 
         self.gate_a = connection[0]
         self.gate_b = connection[1]
 
-        # gate coordinates split into x-, y-, z- coordinates
+        # split gate coordinates into x-, y-, z- coordinates
         self.x_a = self.netlist.print.gates[self.gate_a][0]
         self.y_a = self.netlist.print.gates[self.gate_a][1]
         self.z_a = self.netlist.print.gates[self.gate_a][2]
@@ -101,69 +134,80 @@ class A_star(object):
 
     
     def connect(self, connection):
+        """
+        Connects two gates via an A*-algorithm.
+
+        Input:
+        Connection; tuple of two gates to be connected.
+        
+        Return:
+        None.
+        """ 
         
         self.get_coordinates(connection)
-        self.priorities = []
+        priorities = []
         self.paths = {}
 
         # perform pathfinding until the destination coordinate is reached
         while not self.connected():
             
-            self.current_coordinate = (self.x_a, self.y_a, self.z_a)
+            current_coordinate = (self.x_a, self.y_a, self.z_a)
 
-            # iterate over all possible directions
-            for direction in A_star.directions:
+            # iterate over directions
+            for direction in A_Star.directions:
 
                 # create temporary coordinates
-                temp_x_a = self.x_a + direction[0]
-                temp_y_a = self.y_a + direction[1]
-                temp_z_a = self.z_a + direction[2]
-
-                temp_coordinate = (temp_x_a, temp_y_a, temp_z_a)
+                temp_coordinate = (self.x_a + direction[0], self.y_a + direction[1], self.z_a + direction[2])
                 
-                if self.validate_move(temp_coordinate):
+                if self.valid_move(temp_coordinate): 
 
+                    # save coordinate as 'visited' coordinate    
+                    self.paths[temp_coordinate] = current_coordinate
                     cost = self.calculate_costs(temp_coordinate, direction)
+                    priorities.append((temp_coordinate, cost))
 
-                    # relate new coordinate to old coordinate for tracing
-                    self.paths[temp_coordinate] = self.current_coordinate
+            # sort options on lowest cost to destination
+            priorities.sort(key=lambda coordinate: coordinate[1])
 
-                    # add temporary to list of valid coordinates
-                    self.priorities.append((temp_coordinate, cost))
+            # update x-, y-, z- coordinates
+            if len(priorities) != 0:
+                self.x_a = priorities[0][0][0]
+                self.y_a = priorities[0][0][1]
+                self.z_a = priorities.pop(0)[0][2]
 
-            # sort valid coordinates on lowest cost to destination
-            self.priorities.sort(key=lambda coordinate: coordinate[1])
-
-            # set new x-, y-, z- coordinates if there are valid coordinates to go to
-            if len(self.priorities) != 0:
-                # move(priorities[0][0])
-                self.x_a = self.priorities[0][0][0]
-                self.y_a = self.priorities[0][0][1]
-                self.z_a = self.priorities.pop(0)[0][2]
-
-            # remove all succesful paths, move failed connection to front of netlist
+            # remove all succesful paths, move failed connection to front of netlist if destination is unreachable
             else:
                 self.netlist.clear()
                 self.netlist.netlist.insert(0, self.netlist.netlist.pop(self.netlist.netlist.index(connection)))
                 break
 
-    
+        # trace route from destination to origin, convert path to x-, y-, z- lists for visulization
         if self.connected():
-            # trace route from destination to origin
-            self.netlist.path[connection] = trace(self.paths, (self.x_a, self.y_a, self.z_a))
-
-            # convert path coordinates to x-, y-, z- coordinate lists for visualization via matplotlib
-            self.netlist.path_plot[connection]  = matlib_convert(self.netlist.path[connection])
+            self.netlist.path[connection] = trace(self.paths, (self.x_a, self.y_a, self.z_a))           
+            self.netlist.path_plot[connection] = matlib_convert(self.netlist.path[connection])
 
 
     def connected(self):
+        """
+        Checks if two gates are connected.
+
+        Return:
+        Boolean.
+        """
+
         if self.x_a == self.x_b and self.y_a == self.y_b and self.z_a == self.z_b:
             return True
         return False
         
 
-
     def solved(self):
+        """
+        Checks if a netlist has been solved, i.e. if all connections have been made.
+
+        Return:
+        Boolean.
+        """
+
         for connection in self.netlist.netlist:
             if not connection in self.netlist.path:
                 return False
@@ -172,20 +216,19 @@ class A_star(object):
     
     def run(self):
         """
-        A*-algorithm for pathfinding between coordinates
+        Runs A*-algorithm for pathfinding between gates.
+
+        Return:
+        None.
         """
 
+        # iterate until a solution is found, possibly infinitely long for the most complex netlist.
         while not self.solved():
-            # self.netlist.clear()
-        # iterate over all connections in netlist
             for connection in self.netlist.netlist:
-
                 self.connect(connection)
-                
-            # count amount of wires used
-        self.netlist.score()
+        
 
-        # save solution in json format
+        self.netlist.score()
         self.netlist.save_result()
 
         answer = input("Do you wish to plot a 3D image? Y/N: ").upper()

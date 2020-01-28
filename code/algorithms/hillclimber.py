@@ -6,16 +6,16 @@ Recreate connections made with A* algorithm with Hillclimber algorithm & opening
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
 
-from code.algorithms.a_star import A_star
+from code.algorithms.a_star import A_Star
 from code.helpers.helpers import plot
 import json
 
 
-class Hillclimber(A_star):
+class HillClimber(A_Star):
 
 
     def __init__(self, print_nr, netlist_nr):
-        super(Hillclimber, self).__init__(print_nr, netlist_nr)
+        super(HillClimber, self).__init__(print_nr, netlist_nr)
         self.previous_length = 0
 
 
@@ -39,7 +39,7 @@ class Hillclimber(A_star):
         """Open A* solution file needed to be shortened"""
 
         length = input("Lengte van oplossing om te hillclimben: ")
-        with open(f'results/print_{print_nr}/a_star/netlist_{netlist_nr}_{length}.txt', newline='') as infile:
+        with open(f'results/netlist_{netlist_nr}_{length}.txt', newline='') as infile:
             data = json.load(infile)
 
             # ..

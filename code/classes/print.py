@@ -25,11 +25,19 @@ class Print():
 
 
     def load_print(self, print_nr):
-        """Load gates in grid"""
+        """
+        Load locations of gates in grid from a .csv file.
+        
+        Input:
+        print_nr; string of numeric value.
+        
+        Return:
+        List containing of tuples of x-, y-, z-coordinates.
+        """
 
         gates = {}
 
-        # open csv file with gate coordinates
+        # open .csv file
         with open(f'gates&netlists/chip_{print_nr}/print_{print_nr}.csv', newline='') as csvfile:
             reader = csv.reader(csvfile)
             for gate, x, y in reader:

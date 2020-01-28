@@ -54,9 +54,9 @@ To use this code you first run:
 ```bash
 python main.py
 ```
-After choosing your preferred algorithm. You can chose A for A*, B for Breadth first. Further you will be asked to chose between chip 1 and 2 and then for a netlist. 0-3 for chip 1 and 4-6 for chip 2. The code will now look for a solution for the chosen netlist.
+After choosing your preferred algorithm. You can choose A for A*, B for Breadth first. Further you will be asked to choose between chip 1 and 2 and then for a netlist. 0-3 for chip 1 and 4-6 for chip 2. The code will now look for a solution for the chosen netlist.
 
-Option C for Hillclimber can be chosen after first running either A* or Breadth First first. The Hillclimber algorithm will try to lower the connection cost of the already made netlist by A* or Breadth First if possible.
+Option C for Hillclimber can be chosen after first running either A* or Breadth First first. The Hillclimber algorithm will try to lower the connection cost of the already made netlist by A* or Breadth First if possible. You are asked for the length of the result you wish to perform hillclimber on. Note that you should pick the correct print, netlist, and length, or it will not work.
 
 Below an example of the results given by A* and after running that solution through Hillclimber
 ![Solution given by A* pushing all connections up.](pics/Figure_2.png) ![New solution of A* after running it through Hillclimber.](pics/Figure_1.png)
