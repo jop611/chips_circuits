@@ -28,7 +28,6 @@ def main():
 
     netlist = Netlist(print_nr, netlist_nr)
 
-
     if algorithm == "A":
         while not a_star(netlist):
             pass
