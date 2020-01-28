@@ -14,28 +14,26 @@ class Print():
         self.x_list = []
         self.y_list = []
         self.z_list = []
-        self.chips_locations = []
-        self.chips = self.load_print(print_nr)
+        self.gates_locations = []
+        self.gates = self.load_print(print_nr)
         self.boundaries = ((0, 0, 0), (self.max_x + 1, self.max_y + 1, 7))
-        self.chip_count = len(self.chips)
-        # print(self.chip_count)
-
-        # print(self.boundaries)
+        self.gate_count = len(self.gates)
+      
 
     def load_print(self, print_nr):
-        """ Load chips in grid """
-        chips = {}
+        """Load gates in grid"""
+        gates = {}
 
         # comment
         with open(f'gates&netlists/chip_{print_nr}/print_{print_nr}.csv', newline='') as csvfile:
             reader = csv.reader(csvfile)
-            for chip, x, y in reader:
+            for gate, x, y in reader:
                 try:
-                    chips[int(chip)] = (int(x), int(y), 0)
+                    gates[int(gate)] = (int(x), int(y), 0)
                     self.x_list.append(int(x))
                     self.y_list.append(int(y))
                     self.z_list.append(0)
-                    self.chips_locations.append((int(x), int(y), 0))
+                    self.gates_locations.append((int(x), int(y), 0))
 
                     # set boundaries of grid
                     if int(x) > self.max_x:
@@ -44,4 +42,4 @@ class Print():
                         self.max_y = int(y)
                 except ValueError:
                     pass
-        return chips
+        return gates

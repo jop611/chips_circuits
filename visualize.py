@@ -1,5 +1,5 @@
 """
-Make visual grid with chips and connections
+Make visual grid with gates and connections
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
@@ -7,10 +7,10 @@ Make visual grid with chips and connections
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import numpy as np
-from code.classes.netlist import *
 
-def plot(x_chips, y_chips, z_chips, boundaries, paths, score):
-    """ Load grid with chips and connections """
+
+def plot(x_gates, y_gates, z_gates, boundaries, paths, score):
+    """ Load grid with gates and connections """
 
     #comment
     fig = plt.figure()
@@ -25,10 +25,10 @@ def plot(x_chips, y_chips, z_chips, boundaries, paths, score):
 
     
     for m, zlow, zhigh in [('s', 0, 7)]:
-        xs = x_chips
-        ys = y_chips
-        zs = z_chips
-        ax.scatter(xs, ys, zs, marker=m)
+        x = x_gates
+        y = y_gates
+        z = z_gates
+        ax.scatter(x, y, z, marker=m)
 
     # comment
     for connection in paths:
