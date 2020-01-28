@@ -17,7 +17,7 @@ Hillclimber improves the solution found by A*.
 
 **Heuristic**
 
-The netlists are sorted by Manhattan distance
+The netlists are sorted by the average amount of connections coming to or from the gate
 
 ## Testing
 To use this code you first run:
