@@ -1,12 +1,14 @@
 """
 print.py
 
-Print the grid with all netlist points
+Print the grid with all netlist points.
+Input is the chosen netlist.
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
 
 from code.classes.netlist import *
+
 
 class Print():
     def __init__(self, print_nr):
@@ -24,7 +26,7 @@ class Print():
 
     def load_print(self, print_nr):
         """Load gates in grid"""
-        
+
         gates = {}
 
         # open csv file with gate coordinates

@@ -1,4 +1,2 @@
-- Python versie 3.7.5
-- Matplotlib 3.1.2: python -m pip install -U pip 
-                    python -m pip install -U matplotlib
-
+matplotlib
+json
