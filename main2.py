@@ -21,11 +21,14 @@ def main():
     
     
     if algorithm == "A":
-        while not a_star(netlist):
-            pass
+        for i in range(100):
+            a_star(netlist)
+            netlist.clear()
+            
     elif algorithm == "B":
-        while not bfs(netlist):
-            pass
+        for i in range(100):
+            bfs(netlist)
+            netlist.clear()
     elif algorithm == "C":
         hillclimber(netlist)
 
