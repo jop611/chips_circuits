@@ -9,6 +9,7 @@ Wires can also not cross at an intersection & they can not run along the same gr
 
 The example below shows how the connections A-B, A-C,C-E, D-B, D-E are being made with as little steps as possible.
 ![Example of the connections that have to be made between gates with minimum cost.](pics/voorbeeld.png)
+
 The example below shows how the connections A-B, A-C,C-E, D-B, D-E are being made inefficiently.
 
  ### Constraints 
