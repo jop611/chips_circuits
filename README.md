@@ -4,8 +4,8 @@ Connections can only follow the grid. This includes the edge of the grid. 1 step
 The grid exists of 7 layers. This means that connections can also go up and down. This costs 1 unit length per level.
 All connections of each netlist need to be made at minimum cost.
 
-The example below shows how the connections A-B, A-C,C-E, D-B, D-E are being made with as little steps as possible
- ![Example of the connections that have to be made between gates with minimum cost.](pics/voorbeeld.png)
+The example below shows how the connections A-B, A-C,C-E, D-B, D-E are being made with as little steps as possible.
+![Example of the connections that have to be made between gates with minimum cost.](pics/voorbeeld.png)
 
  **Constraints**
 
