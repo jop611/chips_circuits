@@ -1,11 +1,10 @@
 """
 helpers.py
 
-Traces path of a connection & appends coordinates to list used for visualisation
+Traces path of a connection and appends coordinates to list used for visualisation
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
-
 
 def trace(paths, destination):
     """Traces path from destination to origin"""

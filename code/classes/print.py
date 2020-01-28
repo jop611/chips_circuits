@@ -8,6 +8,7 @@ Print the grid with all netlist points
 
 from code.classes.netlist import *
 
+
 class Print():
     def __init__(self, print_nr):
         self.max_x = 0
@@ -24,7 +25,7 @@ class Print():
 
     def load_print(self, print_nr):
         """Load gates in grid"""
-        
+
         gates = {}
 
         # open csv file with gate coordinates

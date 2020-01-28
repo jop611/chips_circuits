@@ -5,7 +5,7 @@ Finding the shortest wiring pattern for a chip with fixed gates on a seven layer
 This code has been written in [Python3.7.5](https://www.python.org/downloads/). In requirements.txt are all the required packages to successfully use the code.
 
 ## Structure
-All Python scripts are in the folder code. In the map gates&netlists are the chips with their netlists and gates position. The map results has all the given results saved
+All Python scripts are in the folder code. In the map gates&netlists are the chips with their netlists and gates position. The map results has all the given results saved.
 
 ## Algorithms
 For this problem 3 algorithms were used:

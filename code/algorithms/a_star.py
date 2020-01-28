@@ -2,7 +2,7 @@
 a_star.py
 
 A*-algorithm for pathfinding between coordinates for given netlist.
-Returns Boolean function.
+Returns Boolean function, True if all connections are made and False if not all connections could be made
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
@@ -10,14 +10,13 @@ Returns Boolean function.
 from code.classes.netlist import Netlist
 from code.algorithms.helpers import *
 
+
 def a_star(netlist):
-    """
-    A*-algorithm for pathfinding between coordinates
-    """
+    """A*-algorithm for pathfinding between coordinates"""
 
     # hardcoded list of all possible directions (north, east, south, west, up, down)
     directions = [(-1, 0, 0), (0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 1, 0), (0, 0, 1)]
-    
+
     # iterate over all connections in netlist
     for connection in netlist.netlist:
 
@@ -118,4 +117,3 @@ def a_star(netlist):
     # save solution in json format
     netlist.save_result()
     return True
-

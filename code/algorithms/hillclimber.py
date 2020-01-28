@@ -1,7 +1,7 @@
 """
 hillclimber.py
 
-Recreate connections made with A* algorithm with Hillclimber algorithm & opening A* to adjust connections
+Recreate connections made with A* algorithm with Hillclimber algorithm and opening A* to adjust connections
 
 (C) 2020 Teamname, Amsterdam, The Netherlands
 """
@@ -10,6 +10,7 @@ from code.classes.netlist import *
 from code.classes.print import *
 from code.algorithms.helpers import *
 from random import shuffle
+
 
 def hillclimber(netlist):
     """Hillclimber algorithm for pathfinding between coordinate"""
@@ -24,7 +25,7 @@ def hillclimber(netlist):
     while True:
         current_length = netlist.length
         netlist.netlist.sort(key=lambda connection: len(netlist.path[connection]))
-        
+
         # iterate over all connections in netlist
         for connection in netlist.netlist:
 
@@ -105,8 +106,9 @@ def hillclimber(netlist):
             netlist.save_result()
             break
 
+
 def import_result(netlist, print_nr, netlist_nr):
-    """Open A* solution file needed to be shortened"""
+    """Open A* solution file needing to be shortened"""
 
     length = input("Lengte van oplossing om te hillclimben: ")
     with open(f'results/print_{print_nr}/a_star/netlist_{netlist_nr}_{length}.txt', newline='') as infile:

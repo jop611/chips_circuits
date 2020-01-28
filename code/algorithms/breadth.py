@@ -1,3 +1,11 @@
+"""
+Breadth.py
+
+Breadth First algorithm for pathfinding between coordinates for given netlist.
+Returns Boolean function, True if all connections are made and False if not all connections could be made
+
+(C) 2020 Teamname, Amsterdam, The Netherlands
+"""
 
 import queue
 from code.classes.netlist import *
@@ -6,6 +14,8 @@ from code.algorithms.helpers import *
 
 
 def bfs(netlist):
+    """Breadth First algorithm for pathfinding between coordinates"""
+
     directions = [(-1, 0, 0), (0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 1, 0), (0, 0, 1)]
     for connection in netlist.netlist:
 
@@ -45,7 +55,7 @@ def bfs(netlist):
 
             # iterate over all possible directions
             for direction in directions:
-                
+
                 # create temporary coordinates for validation of moves
                 temp_x_a = x_a + direction[0]
                 temp_y_a = y_a + direction[1]
@@ -83,7 +93,7 @@ def bfs(netlist):
 
         # convert path coordinates to x-, y-, z- coordinate lists for visualization via matplotlib
         netlist.path_plot[connection]  = matlib_convert(netlist.path[connection])
-    
+
     netlist.score()
     netlist.save_result()
     return True

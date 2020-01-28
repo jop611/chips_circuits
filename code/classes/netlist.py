@@ -78,7 +78,7 @@ class Netlist():
 
         return coordinate in [path for connection in self.path.values() for path in connection]
 
-    
+
     def check_if_gate(self, coordinate):
         """Check if input coordinate is a location of a gate"""
 
@@ -136,6 +136,7 @@ class Netlist():
     #         if not connection in self.path:
     #             return False
     #     return True
+
 
     def save_result(self):
         """Save connections of succesfull netlist into csv file"""
