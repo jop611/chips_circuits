@@ -1,16 +1,7 @@
-"""
-main.py
-
-Interface for running the program.
-
-(C) 2020 Teamname, Amsterdam, The Netherlands
-"""
-
 from code.classes.netlist import Netlist
-from code.algorithms.breadth import bfs
-from code.algorithms.a_star import a_star
-from code.algorithms.hillclimber import hillclimber
-from visualize import plot
+from code.algorithms.breadthfirst import BreadthFirst
+from code.algorithms.a_star import A_Star
+from code.algorithms.hillclimber import HillClimber
 
 
 def main():
@@ -20,22 +11,41 @@ def main():
                        "A: A* algorithm\n"
                        "B: Breadth-first search algorithm\n"
                        "C: Hillclimber algorithm on previously found solution\n").upper()
+                       
+                       
+    # choice of print can be either 1 or 2
+    print_nr = input(f"\nChoose a print to use (1/2): ")
 
-    print_nr = int(input("Choose a print to use: "))
-    netlist_nr = int(input("Choose a netlist to solve (0-6): "))
 
-    netlist = Netlist(print_nr, netlist_nr)
+    # for print 1, options are 0-3. netlist 0 is a simple netlist for testing purposes.
+    # for print 2, options are 4-6. 
+    netlist_nr = input("Choose a netlist to solve (0-6): ")
+       
 
+    # a_star is the main algorithm that is guaranteed to solve netlist 0-5 in a matter of minutes.
+    # no solution is currently known for netlist 6.
     if algorithm == "A":
-        while not a_star(netlist):
-            pass
-    elif algorithm == "B":
-        while not bfs(netlist):
-            pass
-    elif algorithm == "C":
-        hillclimber(netlist)
+        a_star = A_Star(print_nr, netlist_nr)
+        a_star.run()
+    
 
-    plot(netlist.print.x_list, netlist.print.y_list, netlist.print.z_list, netlist.print.boundaries, netlist.path_plot, netlist.length)
+    # breadth first search suffices for netlist 0 but is not recommended for more complex netlists
+    elif algorithm == "B":
+        bfs = BreadthFirst(print_nr, netlist_nr)
+        bfs.run()
+
+
+    # hillclimber algorithm can be used on obtained results. it requires the correct length of the result to be improved as input.
+    # options: 409 for netlist 0, 709 for netlist 1, 1047 for netlist 2, 
+    #          1219 for netlist 3, 1460 for netlist 4, 1610 for netlist 5.
+    elif algorithm == "C":
+        length = input("Length of solution to perform hillclimber on: ")
+        hillclimber = HillClimber(print_nr, netlist_nr, length)
+        hillclimber.run()
+
 
 if __name__ == "__main__":
     main()
+
+    
+    
