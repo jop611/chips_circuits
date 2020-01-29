@@ -63,7 +63,7 @@ class HillClimber(A_Star):
         """
 
         # open .txt file
-        with open(f'results/netlist_{netlist_nr}_{length}.txt', newline='') as infile:
+        with open(f'results/a_star/netlist_{netlist_nr}_{length}.txt', newline='') as infile:
             data = json.load(infile)
 
             # convert connections in list format to tuple format
@@ -93,6 +93,8 @@ class HillClimber(A_Star):
 
         # import result
         self.import_result(self.netlist.print_nr, self.netlist.netlist_nr, self.hillclimb_length)
+
+        self.netlist.netlist.sort(key=lambda connection: connection[2], reverse=True)
 
         # keep iterating while the total wirelength is lower than before
         while not self.is_optimized():            

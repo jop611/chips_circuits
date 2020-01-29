@@ -146,7 +146,7 @@ class Netlist():
         """Save connections of succesful netlist in json format into .txt file. Returns None."""
 
         # open .csv file
-        with open(f'results/netlist_{self.netlist_nr}_{self.length}.txt', 'w', newline='') as outfile:
+        with open(f'results/hillclimb/manhattan_distance_lang_eerst_penalty/netlist_{self.netlist_nr}_{self.length}.txt', 'w', newline='') as outfile:
             data = {}
             data["netlist"] = self.netlist
             data["paths"] = []
